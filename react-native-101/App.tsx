@@ -1,3 +1,4 @@
+import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
 import {
   Button,
@@ -15,45 +16,48 @@ export default function App() {
   const [goals, setGoals] = useState<Goal[]>([]);
   const [addSheetVisible, setAddSheetVisible] = useState(false);
   return (
-    <KeyboardAvoidingView
-      style={styles.container}
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-    >
-      <Image
-        style={{
-          height: 200,
-          width: "100%",
-          objectFit: "cover",
-          borderRadius: 4,
-        }}
-        source={require("./assets/images/goal.webp")}
-      />
-      <Button
-        title="Add New Goal"
-        onPress={() => {
-          setAddSheetVisible(true);
-        }}
-      />
-      <GoalInputArea
-        visible={addSheetVisible}
-        onAddGoal={(goal) => setGoals((current) => [...current, goal])}
-        onCloseSheet={() => setAddSheetVisible(false)}
-      />
-      <View style={styles.goalList}>
-        <FlatList
-          alwaysBounceVertical={false}
-          data={goals}
-          renderItem={(goal) => (
-            <GoalItem
-              goal={goal.item}
-              onPress={(id) =>
-                setGoals((current) => current.filter((e) => e.id != id))
-              }
-            />
-          )}
+    <>
+      <StatusBar style="auto" />
+      <KeyboardAvoidingView
+        style={styles.container}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+      >
+        <Image
+          style={{
+            height: 200,
+            width: "100%",
+            objectFit: "cover",
+            borderRadius: 4,
+          }}
+          source={require("./assets/images/goal.webp")}
         />
-      </View>
-    </KeyboardAvoidingView>
+        <Button
+          title="Add New Goal"
+          onPress={() => {
+            setAddSheetVisible(true);
+          }}
+        />
+        <GoalInputArea
+          visible={addSheetVisible}
+          onAddGoal={(goal) => setGoals((current) => [...current, goal])}
+          onCloseSheet={() => setAddSheetVisible(false)}
+        />
+        <View style={styles.goalList}>
+          <FlatList
+            alwaysBounceVertical={false}
+            data={goals}
+            renderItem={(goal) => (
+              <GoalItem
+                goal={goal.item}
+                onPress={(id) =>
+                  setGoals((current) => current.filter((e) => e.id != id))
+                }
+              />
+            )}
+          />
+        </View>
+      </KeyboardAvoidingView>
+    </>
   );
 }
 

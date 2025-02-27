@@ -4,6 +4,7 @@
     "slug": "react-native-101",
     "version": "1.0.0",
     "orientation": "portrait",
+    "backgroundColor": "#1e1e1e",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
