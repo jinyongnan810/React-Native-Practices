@@ -44,7 +44,6 @@ export default function App() {
         />
         <View style={styles.goalList}>
           <FlatList
-            alwaysBounceVertical={false}
             data={goals}
             renderItem={(goal) => (
               <GoalItem
@@ -68,7 +67,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   goalList: {
-    // flex: 7,
-    paddingBottom: 100,
+    flex: 1,
+    paddingBottom: 20,
   },
 });
