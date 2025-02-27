@@ -8,7 +8,15 @@ type Props = {
 
 const GoalItem = ({ goal, onPress }: Props) => {
   return (
-    <Pressable onPress={() => onPress(goal.id)}>
+    <Pressable
+      onPress={() => onPress(goal.id)}
+      android_ripple={{ color: "#f0f0f0" }}
+      style={({ pressed }) => [
+        {
+          opacity: pressed ? 0.6 : 1,
+        },
+      ]}
+    >
       <Text style={styles.goalItem} key={goal.id}>
         {goal.text}
       </Text>
