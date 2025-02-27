@@ -1,15 +1,18 @@
 import React from "react";
-import { StyleSheet, Text } from "react-native";
+import { Pressable, StyleSheet, Text } from "react-native";
 
 type Props = {
   goal: Goal;
+  onPress: (id: String) => void;
 };
 
-const GoalItem = ({ goal }: Props) => {
+const GoalItem = ({ goal, onPress }: Props) => {
   return (
-    <Text style={styles.goalItem} key={goal.id}>
-      {goal.text}
-    </Text>
+    <Pressable onPress={() => onPress(goal.id)}>
+      <Text style={styles.goalItem} key={goal.id}>
+        {goal.text}
+      </Text>
+    </Pressable>
   );
 };
 

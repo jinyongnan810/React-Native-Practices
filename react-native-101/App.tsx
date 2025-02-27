@@ -23,7 +23,14 @@ export default function App() {
         <FlatList
           alwaysBounceVertical={false}
           data={goals}
-          renderItem={(goal) => <GoalItem goal={goal.item} />}
+          renderItem={(goal) => (
+            <GoalItem
+              goal={goal.item}
+              onPress={(id) =>
+                setGoals((current) => current.filter((e) => e.id != id))
+              }
+            />
+          )}
         />
       </View>
     </KeyboardAvoidingView>
