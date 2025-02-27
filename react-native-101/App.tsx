@@ -1,5 +1,6 @@
 import { useState } from "react";
 import {
+  Button,
   FlatList,
   KeyboardAvoidingView,
   Platform,
@@ -11,13 +12,22 @@ import GoalItem from "./components/GoalItem";
 
 export default function App() {
   const [goals, setGoals] = useState<Goal[]>([]);
+  const [addSheetVisible, setAddSheetVisible] = useState(false);
   return (
     <KeyboardAvoidingView
       style={styles.container}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
+      <Button
+        title="Add New Goal"
+        onPress={() => {
+          setAddSheetVisible(true);
+        }}
+      />
       <GoalInputArea
+        visible={addSheetVisible}
         onAddGoal={(goal) => setGoals((current) => [...current, goal])}
+        onCloseSheet={() => setAddSheetVisible(false)}
       />
       <View style={styles.goalList}>
         <FlatList

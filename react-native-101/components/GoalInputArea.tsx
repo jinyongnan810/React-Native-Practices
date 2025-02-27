@@ -1,43 +1,56 @@
 import React, { useState } from "react";
-import { Button, StyleSheet, TextInput, View } from "react-native";
+import { Button, Modal, StyleSheet, TextInput, View } from "react-native";
 
 type Props = {
+  visible: boolean;
   onAddGoal: (goal: Goal) => void;
+  onCloseSheet: () => void;
 };
 
-const GoalInputArea = ({ onAddGoal }: Props) => {
+const GoalInputArea = ({ visible, onAddGoal, onCloseSheet }: Props) => {
   const [text, setText] = useState("");
   return (
-    <View style={styles.enterGoalArea}>
-      <TextInput
-        style={styles.goalInput}
-        placeholder="Enter your goal!"
-        value={text}
-        autoCorrect={false}
-        autoComplete="off"
-        onChangeText={setText}
-      />
-      <Button
-        title="Add"
-        onPress={() => {
-          if (text === "") {
-            return;
-          }
-          const newGoal: Goal = {
-            id: Math.random().toString(),
-            text: text,
-          };
-          onAddGoal(newGoal);
-          // setGoalInputText("");
-        }}
-      />
-    </View>
+    <Modal style={{ height: 300 }} visible={visible} animationType="slide">
+      <View style={styles.enterGoalArea}>
+        <TextInput
+          style={styles.goalInput}
+          placeholder="Enter your goal!"
+          value={text}
+          autoCorrect={false}
+          autoComplete="off"
+          onChangeText={setText}
+        />
+        <View style={{ flexDirection: "row" }}>
+          <Button
+            title="Add"
+            onPress={() => {
+              if (text === "") {
+                return;
+              }
+              const newGoal: Goal = {
+                id: Math.random().toString(),
+                text: text,
+              };
+              onAddGoal(newGoal);
+              onCloseSheet();
+              // setGoalInputText("");
+            }}
+          />
+          <Button
+            title="Cancel"
+            onPress={() => {
+              onCloseSheet();
+            }}
+          />
+        </View>
+      </View>
+    </Modal>
   );
 };
 
 const styles = StyleSheet.create({
   enterGoalArea: {
-    flexDirection: "row",
+    flex: 1,
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 24,
