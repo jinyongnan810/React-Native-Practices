@@ -11,9 +11,18 @@ import {
   View,
 } from "react-native";
 
+class Goal {
+  id: string;
+  text: string;
+  constructor(id: string, text: string) {
+    this.id = id;
+    this.text = text;
+  }
+}
+
 export default function App() {
   const [goalInputText, setGoalInputText] = useState("");
-  const [goals, setGoals] = useState<string[]>([]);
+  const [goals, setGoals] = useState<Goal[]>([]);
   return (
     <KeyboardAvoidingView
       style={styles.container}
@@ -33,7 +42,11 @@ export default function App() {
         <Button
           title="Add"
           onPress={() => {
-            setGoals((current) => [...current, goalInputText]);
+            if (goalInputText === "") {
+              return;
+            }
+            const newGoal = new Goal(Math.random().toString(), goalInputText);
+            setGoals((current) => [...current, newGoal]);
             // setGoalInputText("");
           }}
         />
@@ -43,8 +56,8 @@ export default function App() {
           alwaysBounceVertical={false}
           data={goals}
           renderItem={(goal) => (
-            <Text style={styles.goalItem} key={goal.index}>
-              {goal.item}
+            <Text style={styles.goalItem} key={goal.item.id}>
+              {goal.item.text}
             </Text>
           )}
         />
