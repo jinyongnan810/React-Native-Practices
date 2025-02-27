@@ -22,6 +22,13 @@ const GoalInputArea = ({ visible, onAddGoal, onCloseSheet }: Props) => {
         />
         <View style={{ flexDirection: "row" }}>
           <Button
+            title="Cancel"
+            onPress={() => {
+              onCloseSheet();
+            }}
+            color="red"
+          />
+          <Button
             title="Add"
             onPress={() => {
               if (text === "") {
@@ -34,12 +41,6 @@ const GoalInputArea = ({ visible, onAddGoal, onCloseSheet }: Props) => {
               onAddGoal(newGoal);
               onCloseSheet();
               // setGoalInputText("");
-            }}
-          />
-          <Button
-            title="Cancel"
-            onPress={() => {
-              onCloseSheet();
             }}
           />
         </View>

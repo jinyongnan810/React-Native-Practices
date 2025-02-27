@@ -2,6 +2,7 @@ import { useState } from "react";
 import {
   Button,
   FlatList,
+  Image,
   KeyboardAvoidingView,
   Platform,
   StyleSheet,
@@ -18,6 +19,15 @@ export default function App() {
       style={styles.container}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
+      <Image
+        style={{
+          height: 200,
+          width: "100%",
+          objectFit: "cover",
+          borderRadius: 4,
+        }}
+        source={require("./assets/images/goal.webp")}
+      />
       <Button
         title="Add New Goal"
         onPress={() => {
