@@ -1,6 +1,7 @@
 import { useState } from "react";
 import {
   Button,
+  FlatList,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
@@ -18,34 +19,36 @@ export default function App() {
       style={styles.container}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
-      <ScrollView>
-        <View style={styles.enterGoalArea}>
-          <TextInput
-            style={styles.goalInput}
-            placeholder="Enter your goal!"
-            value={goalInputText}
-            autoCorrect={false}
-            autoComplete="off"
-            onChangeText={(e) => {
-              setGoalInputText(e);
-            }}
-          />
-          <Button
-            title="Add"
-            onPress={() => {
-              setGoals((current) => [...current, goalInputText]);
-              setGoalInputText("");
-            }}
-          />
-        </View>
-        <View style={styles.goalList}>
-          {goals.map((goal, index) => (
-            <Text style={styles.goalItem} key={index}>
-              {goal}
+      <View style={styles.enterGoalArea}>
+        <TextInput
+          style={styles.goalInput}
+          placeholder="Enter your goal!"
+          value={goalInputText}
+          autoCorrect={false}
+          autoComplete="off"
+          onChangeText={(e) => {
+            setGoalInputText(e);
+          }}
+        />
+        <Button
+          title="Add"
+          onPress={() => {
+            setGoals((current) => [...current, goalInputText]);
+            // setGoalInputText("");
+          }}
+        />
+      </View>
+      <View style={styles.goalList}>
+        <FlatList
+          alwaysBounceVertical={false}
+          data={goals}
+          renderItem={(goal) => (
+            <Text style={styles.goalItem} key={goal.index}>
+              {goal.item}
             </Text>
-          ))}
-        </View>
-      </ScrollView>
+          )}
+        />
+      </View>
     </KeyboardAvoidingView>
   );
 }
@@ -74,6 +77,7 @@ const styles = StyleSheet.create({
   },
   goalList: {
     // flex: 7,
+    paddingBottom: 100,
   },
   goalItem: {
     fontSize: 16,
