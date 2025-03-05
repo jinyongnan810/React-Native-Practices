@@ -3,6 +3,7 @@ import { Alert, FlatList, StyleSheet, Text, View } from "react-native";
 import GuessHistoryItem from "../components/GuessHistoryItem";
 import PrimaryButton from "../components/PrimaryButton";
 import WhiteBorderText from "../components/WhiteBorderText";
+import Colors from "../constants/Color";
 
 type Props = {
   num: number;
@@ -107,8 +108,8 @@ const styles = StyleSheet.create({
   opponentsGuess: {
     fontSize: 45,
     borderWidth: 3,
-    color: "#11287b",
-    borderColor: "#11287b",
+    color: Colors.secondary,
+    borderColor: Colors.secondary,
     borderRadius: 10,
     paddingVertical: 24,
     marginTop: 20,
@@ -120,7 +121,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
     paddingVertical: 24,
     paddingHorizontal: 12,
-    backgroundColor: "#11287b",
+    backgroundColor: Colors.secondary,
     borderRadius: 10,
     alignItems: "center",
     justifyContent: "center",
@@ -133,7 +134,7 @@ const styles = StyleSheet.create({
   },
   adjustAreaTitle: {
     fontSize: 20,
-    color: "#f7287b",
+    color: Colors.primary,
   },
   adjustAreaButtons: {
     flexDirection: "row",

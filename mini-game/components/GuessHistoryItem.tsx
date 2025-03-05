@@ -1,5 +1,6 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
+import Colors from "../constants/Color";
 type Props = {
   index: number;
   guess: number;
@@ -19,7 +20,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginHorizontal: 20,
     marginVertical: 10,
-    backgroundColor: "#11287b",
+    backgroundColor: Colors.secondary,
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 40,

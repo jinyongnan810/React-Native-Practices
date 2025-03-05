@@ -1,5 +1,6 @@
 import React from "react";
 import { Platform, Pressable, StyleSheet, Text } from "react-native";
+import Colors from "../constants/Color";
 
 type Props = {
   children: React.ReactNode;
@@ -27,7 +28,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     paddingHorizontal: 24,
     paddingVertical: 12,
-    backgroundColor: "#f7287b",
+    backgroundColor: Colors.primary,
     borderRadius: 40,
     textAlign: "center",
     marginTop: 24,

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Alert, StyleSheet, Text, TextInput, View } from "react-native";
 import PrimaryButton from "../components/PrimaryButton";
 import WhiteBorderText from "../components/WhiteBorderText";
+import Colors from "../constants/Color";
 
 type Props = {
   onPickNumber: (num: number) => void;
@@ -80,7 +81,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
     paddingVertical: 24,
     paddingHorizontal: 12,
-    backgroundColor: "#11287b",
+    backgroundColor: Colors.secondary,
     borderRadius: 10,
     alignItems: "center",
     justifyContent: "center",
@@ -93,16 +94,16 @@ const styles = StyleSheet.create({
   },
   enterAreaTitle: {
     fontSize: 20,
-    color: "#f7287b",
+    color: Colors.primary,
   },
   enterAreaInput: {
     marginTop: 20,
     width: 100,
     textAlign: "center",
     fontSize: 40,
-    color: "#f7287b",
+    color: Colors.primary,
     borderBottomWidth: 2,
-    borderBottomColor: "#f7287b",
+    borderBottomColor: Colors.primary,
   },
   enterAreaButtons: {
     flexDirection: "row",
