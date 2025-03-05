@@ -1,14 +1,99 @@
-import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import React, { useEffect, useState } from "react";
+import { Alert, FlatList, StyleSheet, Text, View } from "react-native";
+import GuessHistoryItem from "../components/GuessHistoryItem";
+import PrimaryButton from "../components/PrimaryButton";
 
 type Props = {
   num: number;
+  onGameOver: (tryTimes: number) => void;
 };
 
-const GameScreen = ({ num }: Props) => {
+const GameScreen = ({ num, onGameOver }: Props) => {
+  const [opponentsGuess, setOpponentsGuess] = useState<number>(
+    Math.floor(Math.random() * 99) + 1
+  );
+  const [guessHistory, setGuessHistory] = useState<number[]>([]);
+  useEffect(() => {
+    setGuessHistory([opponentsGuess]);
+  }, []);
+
+  useEffect(() => {
+    if (opponentsGuess === num) {
+      onGameOver(guessHistory.length);
+    }
+  }, [opponentsGuess]);
+
+  const nextRandomNumber = (lowerBound: number, upperBound: number) => {
+    return (
+      Math.floor(Math.random() * Math.min(100, upperBound - lowerBound - 1)) +
+      lowerBound +
+      1
+    );
+  };
+  const wrongDirection = () => {
+    Alert.alert("Wrong Direction", "Please select the correct direction.", [
+      {
+        text: "Okay",
+        style: "cancel",
+      },
+    ]);
+  };
   return (
     <View style={styles.screen}>
-      <Text>Game Screen: {num}</Text>
+      <Text style={styles.title}>Opponent's Guess:{guessHistory.length}</Text>
+      <Text style={styles.opponentsGuess}>{opponentsGuess}</Text>
+      <View style={styles.adjustArea}>
+        <Text style={styles.adjustAreaTitle}>Higher or lower?</Text>
+        <View style={styles.adjustAreaButtons}>
+          <View style={{ flex: 1 }}>
+            <PrimaryButton
+              onClick={() => {
+                if (opponentsGuess < num) {
+                  wrongDirection();
+                  return;
+                }
+                const historyMaxBelow = Math.max(
+                  1,
+                  ...guessHistory.filter((g) => g < num)
+                );
+                const next = nextRandomNumber(historyMaxBelow, opponentsGuess);
+                setOpponentsGuess(next);
+                setGuessHistory((current) => [...current, next]);
+              }}
+            >
+              -
+            </PrimaryButton>
+          </View>
+          <View style={{ flex: 1 }}>
+            <PrimaryButton
+              onClick={() => {
+                if (opponentsGuess > num) {
+                  wrongDirection();
+                  return;
+                }
+                const historyMinAbove = Math.min(
+                  ...guessHistory.filter((g) => g > num),
+                  99
+                );
+                const next = nextRandomNumber(opponentsGuess, historyMinAbove);
+                setOpponentsGuess(next);
+                setGuessHistory((current) => [...current, next]);
+              }}
+            >
+              +
+            </PrimaryButton>
+          </View>
+        </View>
+      </View>
+      <View style={styles.history}>
+        <FlatList
+          data={guessHistory}
+          inverted={true}
+          renderItem={(item) => (
+            <GuessHistoryItem index={item.index} guess={item.item} />
+          )}
+        />
+      </View>
     </View>
   );
 };
@@ -17,6 +102,52 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     padding: 16,
+  },
+  title: {
+    color: "white",
+    fontSize: 30,
+    borderWidth: 3,
+    borderColor: "white",
+    padding: 10,
+    marginTop: 16,
+    textAlign: "center",
+  },
+  opponentsGuess: {
+    fontSize: 45,
+    borderWidth: 3,
+    color: "#11287b",
+    borderColor: "#11287b",
+    borderRadius: 10,
+    paddingVertical: 24,
+    marginTop: 20,
+    textAlign: "center",
+    marginHorizontal: 20,
+  },
+  adjustArea: {
+    marginTop: 36,
+    marginHorizontal: 16,
+    paddingVertical: 24,
+    paddingHorizontal: 12,
+    backgroundColor: "#11287b",
+    borderRadius: 10,
+    alignItems: "center",
+    justifyContent: "center",
+    height: 160,
+    elevation: 10, // Android only
+    shadowRadius: 10, // iOS only
+    shadowColor: "black", // iOS only
+    shadowOpacity: 0.7, // iOS only
+    shadowOffset: { width: 0, height: 2 }, // iOS only
+  },
+  adjustAreaTitle: {
+    fontSize: 20,
+    color: "#f7287b",
+  },
+  adjustAreaButtons: {
+    flexDirection: "row",
+  },
+  history: {
+    paddingVertical: 20,
   },
 });
 
