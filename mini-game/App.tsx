@@ -1,3 +1,5 @@
+import AppLoading from "expo-app-loading";
+import { useFonts } from "expo-font";
 import { LinearGradient } from "expo-linear-gradient";
 import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
@@ -8,9 +10,16 @@ import GameScreen from "./pages/GameScreen";
 import HomeScreen from "./pages/HomeScreen";
 
 export default function App() {
+  const [fontsLoaded] = useFonts({
+    DarumadropOne: require("./assets/DarumadropOne-Regular.ttf"),
+  });
+
   const [pickedNumber, setPickedNumber] = useState<number | null>(null);
   const [tryTimes, setTryTimes] = useState(0);
   let screen = <HomeScreen onPickNumber={setPickedNumber} />;
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  }
   if (tryTimes > 0) {
     screen = (
       <GameOverScreen

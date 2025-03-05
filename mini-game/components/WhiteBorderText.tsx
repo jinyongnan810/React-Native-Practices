@@ -9,6 +9,7 @@ const WhiteBorderText = ({ children }: Props) => {
 
 const styles = StyleSheet.create({
   title: {
+    fontFamily: "DarumadropOne",
     color: "white",
     fontSize: 30,
     borderWidth: 3,
