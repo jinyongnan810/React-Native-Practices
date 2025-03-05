@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, TextInput, View } from "react-native";
+import { Alert, StyleSheet, Text, TextInput, View } from "react-native";
 import PrimaryButton from "../components/PrimaryButton";
 
 const HomeScreen = () => {
@@ -29,7 +29,26 @@ const HomeScreen = () => {
               onClick={() => {
                 const num = parseInt(enteredValue);
                 if (isNaN(num) || num < 1 || num > 99) {
-                  alert("Please enter a number between 1 and 99.");
+                  Alert.alert(
+                    "Invalid Number",
+                    "Please enter a number between 1 and 99.",
+                    [
+                      //   {
+                      //     text: "Cancel",
+                      //     style: "cancel",
+                      //     onPress: () => {
+                      //       setEnteredValue("");
+                      //     },
+                      //   },
+                      {
+                        text: "Okay",
+                        style: "destructive",
+                        onPress: () => {
+                          setEnteredValue("");
+                        },
+                      },
+                    ]
+                  );
                   return;
                 }
               }}
