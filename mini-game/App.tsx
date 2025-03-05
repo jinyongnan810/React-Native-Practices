@@ -13,6 +13,8 @@ export default function App() {
   if (tryTimes > 0) {
     screen = (
       <GameOverScreen
+        tryTimes={tryTimes}
+        answer={pickedNumber!}
         onRestart={() => {
           setPickedNumber(null);
           setTryTimes(0);

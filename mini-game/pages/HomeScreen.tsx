@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Alert, StyleSheet, Text, TextInput, View } from "react-native";
 import PrimaryButton from "../components/PrimaryButton";
+import WhiteBorderText from "../components/WhiteBorderText";
 
 type Props = {
   onPickNumber: (num: number) => void;
@@ -10,7 +11,7 @@ const HomeScreen = ({ onPickNumber }: Props) => {
   const [enteredValue, setEnteredValue] = useState("");
   return (
     <View style={styles.page}>
-      <Text style={styles.title}>Guess My Number</Text>
+      <WhiteBorderText>Guess My Number</WhiteBorderText>
       <View style={styles.enterArea}>
         <Text style={styles.enterAreaTitle}>Enter a Number</Text>
         <TextInput
@@ -72,14 +73,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     padding: 16,
-  },
-  title: {
-    color: "white",
-    fontSize: 30,
-    borderWidth: 3,
-    borderColor: "white",
-    padding: 10,
-    marginTop: 200,
   },
   enterArea: {
     flex: 1,

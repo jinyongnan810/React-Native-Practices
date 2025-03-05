@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Alert, FlatList, StyleSheet, Text, View } from "react-native";
 import GuessHistoryItem from "../components/GuessHistoryItem";
 import PrimaryButton from "../components/PrimaryButton";
+import WhiteBorderText from "../components/WhiteBorderText";
 
 type Props = {
   num: number;
@@ -40,7 +41,7 @@ const GameScreen = ({ num, onGameOver }: Props) => {
   };
   return (
     <View style={styles.screen}>
-      <Text style={styles.title}>Opponent's Guess:{guessHistory.length}</Text>
+      <WhiteBorderText>Opponent's Guess</WhiteBorderText>
       <Text style={styles.opponentsGuess}>{opponentsGuess}</Text>
       <View style={styles.adjustArea}>
         <Text style={styles.adjustAreaTitle}>Higher or lower?</Text>
@@ -102,15 +103,6 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     padding: 16,
-  },
-  title: {
-    color: "white",
-    fontSize: 30,
-    borderWidth: 3,
-    borderColor: "white",
-    padding: 10,
-    marginTop: 16,
-    textAlign: "center",
   },
   opponentsGuess: {
     fontSize: 45,
