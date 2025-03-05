@@ -2,7 +2,11 @@ import React, { useState } from "react";
 import { Alert, StyleSheet, Text, TextInput, View } from "react-native";
 import PrimaryButton from "../components/PrimaryButton";
 
-const HomeScreen = () => {
+type Props = {
+  onPickNumber: (num: number) => void;
+};
+
+const HomeScreen = ({ onPickNumber }: Props) => {
   const [enteredValue, setEnteredValue] = useState("");
   return (
     <View style={styles.page}>
@@ -51,6 +55,7 @@ const HomeScreen = () => {
                   );
                   return;
                 }
+                onPickNumber(num);
               }}
             >
               Confirm
