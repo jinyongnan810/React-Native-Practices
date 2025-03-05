@@ -107,6 +107,7 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   opponentsGuess: {
+    fontFamily: "DarumadropOne",
     fontSize: 45,
     borderWidth: 3,
     color: Colors.secondary,
@@ -136,6 +137,7 @@ const styles = StyleSheet.create({
   adjustAreaTitle: {
     fontSize: 20,
     color: Colors.primary,
+    fontFamily: "DarumadropOne",
   },
   adjustAreaButtons: {
     flexDirection: "row",

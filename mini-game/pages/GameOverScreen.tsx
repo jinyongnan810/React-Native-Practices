@@ -43,6 +43,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 32,
+    fontFamily: "DarumadropOne",
     textAlign: "center",
   },
   textHighlight: {

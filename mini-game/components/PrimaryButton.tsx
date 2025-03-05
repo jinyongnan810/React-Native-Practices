@@ -25,6 +25,7 @@ const PrimaryButton = ({ children, onClick }: Props) => {
 
 const styles = StyleSheet.create({
   primary: {
+    fontFamily: "DarumadropOne",
     fontSize: 18,
     paddingHorizontal: 24,
     paddingVertical: 12,
