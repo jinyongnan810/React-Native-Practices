@@ -1,3 +1,4 @@
+import { Ionicons } from "@expo/vector-icons";
 import React, { useEffect, useState } from "react";
 import { Alert, FlatList, StyleSheet, Text, View } from "react-native";
 import GuessHistoryItem from "../components/GuessHistoryItem";
@@ -63,7 +64,7 @@ const GameScreen = ({ num, onGameOver }: Props) => {
                 setGuessHistory((current) => [...current, next]);
               }}
             >
-              -
+              <Ionicons name="remove" size={24} />
             </PrimaryButton>
           </View>
           <View style={{ flex: 1 }}>
@@ -82,7 +83,7 @@ const GameScreen = ({ num, onGameOver }: Props) => {
                 setGuessHistory((current) => [...current, next]);
               }}
             >
-              +
+              <Ionicons name="add" size={24} />
             </PrimaryButton>
           </View>
         </View>
