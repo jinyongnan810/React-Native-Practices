@@ -1,7 +1,7 @@
 import { LinearGradient } from "expo-linear-gradient";
 import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
-import { ImageBackground, StyleSheet } from "react-native";
+import { ImageBackground, SafeAreaView, StyleSheet } from "react-native";
 import GameScreen from "./pages/GameScreen";
 import HomeScreen from "./pages/HomeScreen";
 
@@ -22,7 +22,7 @@ export default function App() {
           style={styles.screen}
           imageStyle={{ opacity: 0.2 }}
         >
-          {screen}
+          <SafeAreaView style={styles.screen}>{screen}</SafeAreaView>
         </ImageBackground>
       </LinearGradient>
     </>
