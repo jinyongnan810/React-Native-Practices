@@ -42,62 +42,74 @@ const GameScreen = ({ num, onGameOver }: Props) => {
     ]);
   };
   return (
-    <View style={styles.screen}>
-      <WhiteBorderText>Opponent's Guess</WhiteBorderText>
-      <Text style={styles.opponentsGuess}>{opponentsGuess}</Text>
-      <View style={styles.adjustArea}>
-        <Text style={styles.adjustAreaTitle}>Higher or lower?</Text>
-        <View style={styles.adjustAreaButtons}>
-          <View style={{ flex: 1 }}>
-            <PrimaryButton
-              onClick={() => {
-                if (opponentsGuess < num) {
-                  wrongDirection();
-                  return;
-                }
-                const historyMaxBelow = Math.max(
-                  1,
-                  ...guessHistory.filter((g) => g < num)
-                );
-                const next = nextRandomNumber(historyMaxBelow, opponentsGuess);
-                setOpponentsGuess(next);
-                setGuessHistory((current) => [...current, next]);
-              }}
-            >
-              <Ionicons name="remove" size={24} />
-            </PrimaryButton>
+    <FlatList
+      style={styles.screen}
+      data={[{ key: "main" }]}
+      renderItem={() => (
+        <>
+          <WhiteBorderText>Opponent's Guess</WhiteBorderText>
+          <Text style={styles.opponentsGuess}>{opponentsGuess}</Text>
+          <View style={styles.adjustArea}>
+            <Text style={styles.adjustAreaTitle}>Higher or lower?</Text>
+            <View style={styles.adjustAreaButtons}>
+              <View style={{ flex: 1 }}>
+                <PrimaryButton
+                  onClick={() => {
+                    if (opponentsGuess < num) {
+                      wrongDirection();
+                      return;
+                    }
+                    const historyMaxBelow = Math.max(
+                      1,
+                      ...guessHistory.filter((g) => g < num)
+                    );
+                    const next = nextRandomNumber(
+                      historyMaxBelow,
+                      opponentsGuess
+                    );
+                    setOpponentsGuess(next);
+                    setGuessHistory((current) => [...current, next]);
+                  }}
+                >
+                  <Ionicons name="remove" size={24} />
+                </PrimaryButton>
+              </View>
+              <View style={{ flex: 1 }}>
+                <PrimaryButton
+                  onClick={() => {
+                    if (opponentsGuess > num) {
+                      wrongDirection();
+                      return;
+                    }
+                    const historyMinAbove = Math.min(
+                      ...guessHistory.filter((g) => g > num),
+                      99
+                    );
+                    const next = nextRandomNumber(
+                      opponentsGuess,
+                      historyMinAbove
+                    );
+                    setOpponentsGuess(next);
+                    setGuessHistory((current) => [...current, next]);
+                  }}
+                >
+                  <Ionicons name="add" size={24} />
+                </PrimaryButton>
+              </View>
+            </View>
           </View>
-          <View style={{ flex: 1 }}>
-            <PrimaryButton
-              onClick={() => {
-                if (opponentsGuess > num) {
-                  wrongDirection();
-                  return;
-                }
-                const historyMinAbove = Math.min(
-                  ...guessHistory.filter((g) => g > num),
-                  99
-                );
-                const next = nextRandomNumber(opponentsGuess, historyMinAbove);
-                setOpponentsGuess(next);
-                setGuessHistory((current) => [...current, next]);
-              }}
-            >
-              <Ionicons name="add" size={24} />
-            </PrimaryButton>
+          <View style={styles.history}>
+            <FlatList
+              data={guessHistory}
+              inverted={true}
+              renderItem={(item) => (
+                <GuessHistoryItem index={item.index} guess={item.item} />
+              )}
+            />
           </View>
-        </View>
-      </View>
-      <View style={styles.history}>
-        <FlatList
-          data={guessHistory}
-          inverted={true}
-          renderItem={(item) => (
-            <GuessHistoryItem index={item.index} guess={item.item} />
-          )}
-        />
-      </View>
-    </View>
+        </>
+      )}
+    />
   );
 };
 

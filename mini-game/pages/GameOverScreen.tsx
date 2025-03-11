@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
 import PrimaryButton from "../components/PrimaryButton";
 import WhiteBorderText from "../components/WhiteBorderText";
 
@@ -11,18 +11,23 @@ type Props = {
 
 const GameOverScreen = ({ tryTimes, answer, onRestart }: Props) => {
   return (
-    <View style={styles.screen}>
-      <View style={{ marginTop: 100 }}>
-        <WhiteBorderText>Game Over!</WhiteBorderText>
-        <Image style={styles.image} source={require("../assets/success.png")} />
-        <Text style={styles.text}>
-          Your phone needed <Text style={styles.textHighlight}>{tryTimes}</Text>{" "}
-          rounds to guess the number{" "}
-          <Text style={styles.textHighlight}>{answer}</Text>.
-        </Text>
-        <PrimaryButton onClick={onRestart}>Start new game</PrimaryButton>
+    <ScrollView>
+      <View style={styles.screen}>
+        <View style={{ marginTop: 100 }}>
+          <WhiteBorderText>Game Over!</WhiteBorderText>
+          <Image
+            style={styles.image}
+            source={require("../assets/success.png")}
+          />
+          <Text style={styles.text}>
+            Your phone needed{" "}
+            <Text style={styles.textHighlight}>{tryTimes}</Text> rounds to guess
+            the number <Text style={styles.textHighlight}>{answer}</Text>.
+          </Text>
+          <PrimaryButton onClick={onRestart}>Start new game</PrimaryButton>
+        </View>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -40,6 +45,7 @@ const styles = StyleSheet.create({
     borderWidth: 3,
     borderColor: "black",
     marginVertical: 32,
+    margin: "auto",
   },
   text: {
     fontSize: 32,
