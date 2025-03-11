@@ -13,7 +13,7 @@ const GameOverScreen = ({ tryTimes, answer, onRestart }: Props) => {
   return (
     <ScrollView>
       <View style={styles.screen}>
-        <View style={{ marginTop: 100 }}>
+        <View style={{ marginTop: 32 }}>
           <WhiteBorderText>Game Over!</WhiteBorderText>
           <Image
             style={styles.image}

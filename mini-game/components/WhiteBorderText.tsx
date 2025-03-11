@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, useWindowDimensions } from "react-native";
+import { Platform, StyleSheet, Text, useWindowDimensions } from "react-native";
 import SizeHelper from "../helpers/SizeHelper";
 type Props = {
   children: React.ReactNode;
@@ -18,7 +18,8 @@ const styles = StyleSheet.create({
     fontFamily: "DarumadropOne",
     color: "white",
     fontSize: SizeHelper.isLargeScreen ? 40 : 30,
-    borderWidth: 3,
+    // we can also make WhiteBorderText.ios.tsx and WhiteBorderText.android.tsx and import them in WhiteBorderText
+    borderWidth: Platform.select({ ios: 3, android: 2 }),
     borderColor: "white",
     padding: 10,
     marginTop: 16,
