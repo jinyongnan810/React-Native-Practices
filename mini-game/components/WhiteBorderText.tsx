@@ -1,11 +1,16 @@
 import React from "react";
-import { StyleSheet, Text } from "react-native";
+import { StyleSheet, Text, useWindowDimensions } from "react-native";
 import SizeHelper from "../helpers/SizeHelper";
 type Props = {
   children: React.ReactNode;
 };
 const WhiteBorderText = ({ children }: Props) => {
-  return <Text style={styles.title}>{children}</Text>;
+  const { height } = useWindowDimensions();
+  return (
+    <Text style={[styles.title, { padding: height < 480 ? 12 : 24 }]}>
+      {children}
+    </Text>
+  );
 };
 
 const styles = StyleSheet.create({
