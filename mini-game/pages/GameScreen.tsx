@@ -28,9 +28,8 @@ const GameScreen = ({ num, onGameOver }: Props) => {
 
   const nextRandomNumber = (lowerBound: number, upperBound: number) => {
     return (
-      Math.floor(Math.random() * Math.min(100, upperBound - lowerBound - 1)) +
-      lowerBound +
-      1
+      Math.floor(Math.random() * Math.min(100, upperBound - lowerBound)) +
+      lowerBound
     );
   };
   const wrongDirection = () => {
@@ -83,7 +82,7 @@ const GameScreen = ({ num, onGameOver }: Props) => {
                     }
                     const historyMinAbove = Math.min(
                       ...guessHistory.filter((g) => g > num),
-                      99
+                      100
                     );
                     const next = nextRandomNumber(
                       opponentsGuess,
