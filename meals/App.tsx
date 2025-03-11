@@ -1,21 +1,30 @@
-import { LinearGradient } from "expo-linear-gradient";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { StatusBar } from "expo-status-bar";
 import React from "react";
-import { SafeAreaView, StyleSheet } from "react-native";
-import { Colors } from "react-native/Libraries/NewAppScreen";
+import { StyleSheet } from "react-native";
 import CategoriesScreen from "./screens/CategoriesScreen";
+import MealsInCategoryScreen from "./screens/MealsInCategoryScreen";
+
+export type RootStackParamList = {
+  Categories: undefined;
+  "Meals In Cateory": { categoryId: String };
+};
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function App() {
-  const screen = <CategoriesScreen />;
   return (
     <>
       <StatusBar style="auto" />
-      <LinearGradient
-        style={styles.screen}
-        colors={[Colors.primary, "#ff7e5f"]}
-      >
-        <SafeAreaView style={styles.screen}>{screen}</SafeAreaView>
-      </LinearGradient>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="Categories">
+          <Stack.Screen name="Categories" component={CategoriesScreen} />
+          <Stack.Screen
+            name="Meals In Cateory"
+            component={MealsInCategoryScreen}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
     </>
   );
 }

@@ -4,13 +4,12 @@ import Category from "../models/category";
 
 type Props = {
   category: Category;
+  onPress: () => void;
 };
-const CategoryItem = ({ category }: Props) => {
+const CategoryItem = ({ category, onPress }: Props) => {
   return (
     <Pressable
-      onPress={() => {
-        console.log(`Category ${category.title} pressed`);
-      }}
+      onPress={onPress}
       android_ripple={{ color: "#f0f0f0" }}
       style={({ pressed }) => [
         styles.container,
