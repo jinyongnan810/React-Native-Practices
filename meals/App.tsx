@@ -1,20 +1,30 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { LinearGradient } from "expo-linear-gradient";
+import { StatusBar } from "expo-status-bar";
+import React from "react";
+import { SafeAreaView, StyleSheet } from "react-native";
+import { Colors } from "react-native/Libraries/NewAppScreen";
+import CategoriesScreen from "./screens/CategoriesScreen";
 
 export default function App() {
+  const screen = <CategoriesScreen />;
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
+    <>
       <StatusBar style="auto" />
-    </View>
+      <LinearGradient
+        style={styles.screen}
+        colors={[Colors.primary, "#ff7e5f"]}
+      >
+        <SafeAreaView style={styles.screen}>{screen}</SafeAreaView>
+      </LinearGradient>
+    </>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+  },
+  screen: {
+    flex: 1,
   },
 });
