@@ -50,10 +50,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     borderRadius: 12,
-    overflow: "hidden",
+    // overflow: "hidden",
     marginVertical: 8,
+    shadowColor: "black",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.26,
+    shadowRadius: 5,
+    elevation: 3,
   },
   image: {
+    borderTopLeftRadius: 12,
+    borderTopRightRadius: 12,
     width: "100%",
     height: 200,
     objectFit: "cover",
@@ -64,6 +71,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 16,
     backgroundColor: "#555",
+    borderBottomLeftRadius: 12,
+    borderBottomRightRadius: 12,
   },
   title: {
     fontSize: 22,
