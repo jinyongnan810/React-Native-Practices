@@ -1,3 +1,5 @@
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import React from "react";
 import {
   Image,
@@ -7,15 +9,24 @@ import {
   Text,
   View,
 } from "react-native";
+import { RootStackParamList } from "../App";
 import Meal from "../models/meal";
-
+type MealsInCategoryScreenNavigationProps = NativeStackNavigationProp<
+  RootStackParamList,
+  "Meals In Cateory"
+>;
 type Props = {
   meal: Meal;
 };
 const MealItem = ({ meal }: Props) => {
+  const navigation = useNavigation<MealsInCategoryScreenNavigationProps>();
   return (
     <Pressable
-      onPress={() => {}}
+      onPress={() => {
+        navigation.navigate("About the Meal", {
+          mealId: meal.id,
+        });
+      }}
       android_ripple={{ color: "#f0f0f0" }}
       style={({ pressed }) => [
         styles.container,

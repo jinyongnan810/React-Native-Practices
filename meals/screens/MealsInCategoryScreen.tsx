@@ -5,7 +5,7 @@ import { RootStackParamList } from "../App";
 import MealItem from "../components/MealItem";
 import { MEALS } from "../data/dummy";
 
-type MealsInCategoryScreenRouteProp = RouteProp<
+export type MealsInCategoryScreenRouteProp = RouteProp<
   RootStackParamList,
   "Meals In Cateory"
 >;
