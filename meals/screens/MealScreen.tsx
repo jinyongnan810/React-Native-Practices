@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import { RootStackParamList } from "../App";
 import DescriptionList from "../components/DescriptionList";
+import StarButton from "../components/StarButton";
 import { MEALS } from "../data/dummy";
 
 type MealScreenRouteProp = RouteProp<RootStackParamList, "About the Meal">;
@@ -29,7 +30,10 @@ const MealScreen = () => {
     if (!meal) {
       navigation.setOptions({ title: "Meal not found" });
     } else {
-      navigation.setOptions({ title: meal.title });
+      navigation.setOptions({
+        title: meal.title,
+        headerRight: () => <StarButton stared={false} onPress={() => {}} />,
+      });
     }
   }, []);
   if (!meal) {
