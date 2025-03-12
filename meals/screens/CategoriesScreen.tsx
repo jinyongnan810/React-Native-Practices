@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import React from "react";
 import { FlatList, StyleSheet } from "react-native";
@@ -13,6 +14,7 @@ type Props = {
 };
 
 const CategoriesScreen = ({ navigation }: Props) => {
+  const navigationFromHook = useNavigation<CategoriesProps>();
   return (
     <FlatList
       style={styles.container}
@@ -22,7 +24,10 @@ const CategoriesScreen = ({ navigation }: Props) => {
         CategoryItem({
           category: item.item,
           onPress: () => {
-            navigation.navigate("Meals In Cateory", {
+            // navigation.navigate("Meals In Cateory", {
+            //   categoryId: item.item.id,
+            // });
+            navigationFromHook.navigate("Meals In Cateory", {
               categoryId: item.item.id,
             });
           },

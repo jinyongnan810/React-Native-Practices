@@ -1,4 +1,4 @@
-import { RouteProp } from "@react-navigation/native";
+import { RouteProp, useRoute } from "@react-navigation/native";
 import React from "react";
 import { Text } from "react-native";
 import { RootStackParamList } from "../App";
@@ -13,7 +13,8 @@ type Props = {
 };
 
 const MealsInCategoryScreen = ({ route }: Props) => {
-  const { categoryId } = route.params;
+  // const { categoryId } = route.params;
+  const { categoryId } = useRoute<MealsInCategoryScreenRouteProp>().params;
   return <Text>{categoryId}</Text>;
 };
 
