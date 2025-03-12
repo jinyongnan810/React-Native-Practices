@@ -1,13 +1,13 @@
 type Meal = {
-  id: String;
-  categoryIds: String[];
-  title: String;
-  affordability: String;
-  complexity: String;
-  imageUrl: String;
+  id: string;
+  categoryIds: string[];
+  title: string;
+  affordability: string;
+  complexity: string;
+  imageUrl: string;
   duration: Number;
-  ingredients: String[];
-  steps: String[];
+  ingredients: string[];
+  steps: string[];
   isGlutenFree: Boolean;
   isVegan: Boolean;
   isVegetarian: Boolean;

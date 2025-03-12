@@ -8,7 +8,7 @@ import MealsInCategoryScreen from "./screens/MealsInCategoryScreen";
 
 export type RootStackParamList = {
   Categories: undefined;
-  "Meals In Cateory": { categoryId: String };
+  "Meals In Cateory": { categoryId: string };
 };
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
