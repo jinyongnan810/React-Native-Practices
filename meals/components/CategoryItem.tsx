@@ -19,7 +19,7 @@ const CategoryItem = ({ category, onPress }: Props) => {
         },
       ]}
     >
-      <Text>{category.title}</Text>
+      <Text style={styles.title}>{category.title}</Text>
     </Pressable>
   );
 };
@@ -38,6 +38,11 @@ const styles = StyleSheet.create({
     elevation: 3,
     padding: 15,
     margin: 10,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "white",
   },
 });
 

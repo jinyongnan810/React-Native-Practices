@@ -70,13 +70,14 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     padding: 16,
-    backgroundColor: "#555",
+    backgroundColor: "#000",
     borderBottomLeftRadius: 12,
     borderBottomRightRadius: 12,
   },
   title: {
     fontSize: 22,
     fontWeight: "bold",
+    color: "#fff",
   },
   subtitle: {
     fontSize: 16,

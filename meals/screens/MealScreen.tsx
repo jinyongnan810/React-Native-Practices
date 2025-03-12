@@ -72,11 +72,13 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontWeight: "bold",
     marginVertical: 8,
+    color: "#fff",
   },
   subtitle: {
     fontSize: 16,
     textAlign: "center",
     marginVertical: 8,
+    color: "#888",
   },
 });
 
