@@ -1,5 +1,6 @@
-import { RouteProp, useRoute } from "@react-navigation/native";
-import React from "react";
+import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import React, { useEffect } from "react";
 import {
   Dimensions,
   Image,
@@ -13,11 +14,24 @@ import DescriptionList from "../components/DescriptionList";
 import { MEALS } from "../data/dummy";
 
 type MealScreenRouteProp = RouteProp<RootStackParamList, "About the Meal">;
+type MealScreenNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  "Meals In Cateory"
+>;
 
 const MealScreen = () => {
   const { mealId } = useRoute<MealScreenRouteProp>().params;
+  const navigation = useNavigation<MealScreenNavigationProp>();
 
   const meal = MEALS.filter((meal) => meal.id === mealId)[0];
+
+  useEffect(() => {
+    if (!meal) {
+      navigation.setOptions({ title: "Meal not found" });
+    } else {
+      navigation.setOptions({ title: meal.title });
+    }
+  }, []);
   if (!meal) {
     return <Text>Meal not found</Text>;
   }

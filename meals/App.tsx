@@ -3,7 +3,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { StatusBar } from "expo-status-bar";
 import React from "react";
 import { StyleSheet } from "react-native";
-import { CATEGORIES, MEALS } from "./data/dummy";
+import { CATEGORIES } from "./data/dummy";
 import CategoriesScreen from "./screens/CategoriesScreen";
 import MealScreen from "./screens/MealScreen";
 import MealsInCategoryScreen from "./screens/MealsInCategoryScreen";
@@ -64,16 +64,16 @@ export default function App() {
           <Stack.Screen
             name="About the Meal"
             component={MealScreen}
-            options={({ route }) => {
-              const mealId = route.params.mealId;
-              const meal = MEALS.find((meal) => meal.id === mealId);
-              if (!meal) {
-                return {};
-              }
-              return {
-                title: meal.title,
-              };
-            }}
+            // options={({ route }) => {
+            //   const mealId = route.params.mealId;
+            //   const meal = MEALS.find((meal) => meal.id === mealId);
+            //   if (!meal) {
+            //     return {};
+            //   }
+            //   return {
+            //     title: meal.title,
+            //   };
+            // }}
           />
         </Stack.Navigator>
       </NavigationContainer>
