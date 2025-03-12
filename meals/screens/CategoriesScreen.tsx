@@ -5,10 +5,7 @@ import { FlatList, StyleSheet } from "react-native";
 import { RootStackParamList } from "../App";
 import CategoryItem from "../components/CategoryItem";
 import { CATEGORIES } from "../data/dummy";
-type CategoriesProps = NativeStackNavigationProp<
-  RootStackParamList,
-  "Categories"
->;
+type CategoriesProps = NativeStackNavigationProp<RootStackParamList, "Home">;
 type Props = {
   navigation: CategoriesProps;
 };

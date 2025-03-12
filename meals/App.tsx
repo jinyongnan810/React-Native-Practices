@@ -1,3 +1,5 @@
+import { Ionicons } from "@expo/vector-icons";
+import { createDrawerNavigator } from "@react-navigation/drawer";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { StatusBar } from "expo-status-bar";
@@ -5,23 +7,68 @@ import React from "react";
 import { StyleSheet } from "react-native";
 import { CATEGORIES } from "./data/dummy";
 import CategoriesScreen from "./screens/CategoriesScreen";
+import FavoriteScreen from "./screens/FavoriteScreen";
 import MealScreen from "./screens/MealScreen";
 import MealsInCategoryScreen from "./screens/MealsInCategoryScreen";
 
 export type RootStackParamList = {
-  Categories: undefined;
+  Home: undefined;
   "Meals In Cateory": { categoryId: string };
   "About the Meal": { mealId: string };
 };
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
+const Drawer = createDrawerNavigator();
+
 export default function App() {
+  const HomeDrawerNavigator = () => (
+    <Drawer.Navigator
+      initialRouteName="Categories"
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: "#351401",
+        },
+        headerTintColor: "#fff",
+        sceneStyle: {
+          backgroundColor: "#3f2f25",
+        },
+        drawerContentStyle: {
+          backgroundColor: "#3f2f25",
+        },
+        drawerActiveTintColor: "#D76C82",
+        drawerInactiveTintColor: "#fff",
+        drawerActiveBackgroundColor: "#351401",
+      }}
+    >
+      <Drawer.Screen
+        name="Categories"
+        component={CategoriesScreen}
+        options={{
+          title: "Meal Categories",
+          drawerIcon: ({ color, size }) => {
+            return <Ionicons name="list" size={size} color={color} />;
+          },
+        }}
+      />
+      <Drawer.Screen
+        name="Favorites"
+        component={FavoriteScreen}
+        options={{
+          title: "My Favorites",
+          drawerIcon: ({ color, size }) => {
+            return <Ionicons name="star" size={size} color={color} />;
+          },
+        }}
+      />
+    </Drawer.Navigator>
+  );
+
   return (
     <>
       <StatusBar style="light" />
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="Categories"
+          initialRouteName="Home"
           screenOptions={{
             headerStyle: {
               backgroundColor: "#351401",
@@ -33,17 +80,11 @@ export default function App() {
           }}
         >
           <Stack.Screen
-            name="Categories"
-            component={CategoriesScreen}
+            name="Home"
+            component={HomeDrawerNavigator}
             options={{
-              title: "Meal Categories",
-              // headerStyle: {
-              //   backgroundColor: "#351401",
-              // },
-              // headerTintColor: "#fff",
-              // contentStyle: {
-              //   backgroundColor: "#3f2f25",
-              // },
+              headerShown: false,
+              title: "Categories",
             }}
           />
           <Stack.Screen
