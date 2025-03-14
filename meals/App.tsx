@@ -10,6 +10,7 @@ import CategoriesScreen from "./screens/CategoriesScreen";
 import FavoriteScreen from "./screens/FavoriteScreen";
 import MealScreen from "./screens/MealScreen";
 import MealsInCategoryScreen from "./screens/MealsInCategoryScreen";
+import FavoritesContextProvider from "./store/context/favorites-context";
 
 export type RootStackParamList = {
   Home: undefined;
@@ -66,58 +67,60 @@ export default function App() {
   return (
     <>
       <StatusBar style="light" />
-      <NavigationContainer>
-        <Stack.Navigator
-          initialRouteName="Home"
-          screenOptions={{
-            headerStyle: {
-              backgroundColor: "#351401",
-            },
-            headerTintColor: "#fff",
-            contentStyle: {
-              backgroundColor: "#3f2f25",
-            },
-          }}
-        >
-          <Stack.Screen
-            name="Home"
-            component={HomeDrawerNavigator}
-            options={{
-              headerShown: false,
-              title: "Categories",
+      <FavoritesContextProvider>
+        <NavigationContainer>
+          <Stack.Navigator
+            initialRouteName="Home"
+            screenOptions={{
+              headerStyle: {
+                backgroundColor: "#351401",
+              },
+              headerTintColor: "#fff",
+              contentStyle: {
+                backgroundColor: "#3f2f25",
+              },
             }}
-          />
-          <Stack.Screen
-            name="Meals In Cateory"
-            component={MealsInCategoryScreen}
-            options={({ route }) => {
-              const category = CATEGORIES.find(
-                (category) => category.id === route.params.categoryId
-              );
-              if (!category) {
-                return {};
-              }
-              return {
-                title: category.title,
-              };
-            }}
-          />
-          <Stack.Screen
-            name="About the Meal"
-            component={MealScreen}
-            // options={({ route }) => {
-            //   const mealId = route.params.mealId;
-            //   const meal = MEALS.find((meal) => meal.id === mealId);
-            //   if (!meal) {
-            //     return {};
-            //   }
-            //   return {
-            //     title: meal.title,
-            //   };
-            // }}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
+          >
+            <Stack.Screen
+              name="Home"
+              component={HomeDrawerNavigator}
+              options={{
+                headerShown: false,
+                title: "Categories",
+              }}
+            />
+            <Stack.Screen
+              name="Meals In Cateory"
+              component={MealsInCategoryScreen}
+              options={({ route }) => {
+                const category = CATEGORIES.find(
+                  (category) => category.id === route.params.categoryId
+                );
+                if (!category) {
+                  return {};
+                }
+                return {
+                  title: category.title,
+                };
+              }}
+            />
+            <Stack.Screen
+              name="About the Meal"
+              component={MealScreen}
+              // options={({ route }) => {
+              //   const mealId = route.params.mealId;
+              //   const meal = MEALS.find((meal) => meal.id === mealId);
+              //   if (!meal) {
+              //     return {};
+              //   }
+              //   return {
+              //     title: meal.title,
+              //   };
+              // }}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </FavoritesContextProvider>
     </>
   );
 }

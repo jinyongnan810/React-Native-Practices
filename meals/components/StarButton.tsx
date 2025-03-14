@@ -1,14 +1,17 @@
 import { Ionicons } from "@expo/vector-icons";
-import React from "react";
+import React, { useContext } from "react";
 import { Platform, Pressable } from "react-native";
+import { FavoritesContext } from "../store/context/favorites-context";
 type Props = {
-  stared: boolean;
-  onPress: () => void;
+  id: string;
 };
-const StarButton = ({ stared, onPress }: Props) => {
+const StarButton = ({ id }: Props) => {
+  const { addFavorite, removeFavorite, isFavorite } =
+    useContext(FavoritesContext);
+  const stared = isFavorite(id);
   return (
     <Pressable
-      onPress={onPress}
+      onPress={stared ? () => removeFavorite(id) : () => addFavorite(id)}
       android_ripple={{ color: "#f0f0f0" }}
       style={({ pressed }) => [
         {

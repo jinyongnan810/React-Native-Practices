@@ -32,7 +32,7 @@ const MealScreen = () => {
     } else {
       navigation.setOptions({
         title: meal.title,
-        headerRight: () => <StarButton stared={false} onPress={() => {}} />,
+        headerRight: () => <StarButton id={meal.id} />,
       });
     }
   }, []);
