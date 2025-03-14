@@ -5,12 +5,13 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { StatusBar } from "expo-status-bar";
 import React from "react";
 import { StyleSheet } from "react-native";
+import { Provider } from "react-redux";
 import { CATEGORIES } from "./data/dummy";
 import CategoriesScreen from "./screens/CategoriesScreen";
 import FavoriteScreen from "./screens/FavoriteScreen";
 import MealScreen from "./screens/MealScreen";
 import MealsInCategoryScreen from "./screens/MealsInCategoryScreen";
-import FavoritesContextProvider from "./store/context/favorites-context";
+import { store } from "./store/redux/store";
 
 export type RootStackParamList = {
   Home: undefined;
@@ -67,7 +68,8 @@ export default function App() {
   return (
     <>
       <StatusBar style="light" />
-      <FavoritesContextProvider>
+      <Provider store={store}>
+        {/* <FavoritesContextProvider> */}
         <NavigationContainer>
           <Stack.Navigator
             initialRouteName="Home"
@@ -120,7 +122,8 @@ export default function App() {
             />
           </Stack.Navigator>
         </NavigationContainer>
-      </FavoritesContextProvider>
+        {/* </FavoritesContextProvider> */}
+      </Provider>
     </>
   );
 }
