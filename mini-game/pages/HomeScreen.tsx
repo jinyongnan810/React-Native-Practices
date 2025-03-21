@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
   enterArea: {
     flex: 1,
     marginTop: 24,
-    marginHorizontal: 16,
+    marginHorizontal: 0,
     paddingVertical: 24,
     paddingHorizontal: 12,
     backgroundColor: Colors.secondary,
