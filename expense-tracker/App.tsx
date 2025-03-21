@@ -12,8 +12,8 @@ import { Provider } from "react-redux";
 import AddButton from "./components/AddButton";
 import Colors from "./constants";
 import AddOrUpdateScreen from "./screens/AddOrUpdateScreen";
-import HomeScreen from "./screens/HomeScreen";
-import OtherScreen from "./screens/OtherScreen";
+import OtherScreen from "./screens/AllExpensesScreen";
+import RecentExpensesScreen from "./screens/RecentExpensesScreen";
 import { store } from "./store/store";
 export type RootStackParamList = {
   Home: undefined;
@@ -50,20 +50,22 @@ export default function App() {
       }}
     >
       <Tab.Screen
-        name="Home"
-        component={HomeScreen}
+        name="Recent Expenses"
+        component={RecentExpensesScreen}
         options={{
+          tabBarLabel: "Recent",
           tabBarIcon: ({ color, size }) => {
-            return <Ionicons name="home" size={size} color={color} />;
+            return <Ionicons name="hourglass" size={size} color={color} />;
           },
         }}
       />
       <Tab.Screen
-        name="Other"
+        name="All Expenses"
         component={OtherScreen}
         options={{
+          tabBarLabel: "All",
           tabBarIcon: ({ color, size }) => {
-            return <Ionicons name="text" size={size} color={color} />;
+            return <Ionicons name="calendar" size={size} color={color} />;
           },
         }}
       />

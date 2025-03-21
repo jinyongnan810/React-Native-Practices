@@ -33,6 +33,7 @@ const ExpenseItem = ({ item }: Props) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    width: "100%",
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
