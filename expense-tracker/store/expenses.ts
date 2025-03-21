@@ -3,7 +3,20 @@ interface ExpensesState {
   expenses: Expense[];
 }
 const initialState: ExpensesState = {
-  expenses: [],
+  expenses: [
+    {
+      id: "1",
+      title: "Groceries",
+      amount: 100,
+      date: new Date(),
+    },
+    {
+      id: "2",
+      title: "Gas",
+      amount: 50,
+      date: new Date(),
+    },
+  ],
 };
 export const expensesSlice = createSlice({
   name: "expenses",

@@ -10,6 +10,7 @@ import React from "react";
 import { StyleSheet } from "react-native";
 import { Provider } from "react-redux";
 import AddButton from "./components/AddButton";
+import Colors from "./constants";
 import AddOrUpdateScreen from "./screens/AddOrUpdateScreen";
 import HomeScreen from "./screens/HomeScreen";
 import OtherScreen from "./screens/OtherScreen";
@@ -30,17 +31,17 @@ export default function App() {
     <Tab.Navigator
       screenOptions={{
         headerStyle: {
-          backgroundColor: "#2980b9",
+          backgroundColor: Colors.primary,
         },
         headerTintColor: "#fff",
         headerRight: () => <AddButton />,
         sceneStyle: {
-          backgroundColor: "#3498db",
+          backgroundColor: Colors.secondary,
         },
         tabBarStyle: {
-          backgroundColor: "#2980b9",
+          backgroundColor: Colors.primary,
         },
-        tabBarActiveTintColor: "#e67e22",
+        tabBarActiveTintColor: Colors.orange,
         tabBarInactiveTintColor: "#fff",
       }}
     >
@@ -73,11 +74,11 @@ export default function App() {
             initialRouteName="Home"
             screenOptions={{
               headerStyle: {
-                backgroundColor: "#2980b9",
+                backgroundColor: Colors.primary,
               },
               headerTintColor: "#fff",
               contentStyle: {
-                backgroundColor: "#3498db",
+                backgroundColor: Colors.secondary,
               },
             }}
           >
