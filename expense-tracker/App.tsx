@@ -96,7 +96,11 @@ export default function App() {
                 headerShown: false,
               }}
             />
-            <Stack.Screen name="AddOrUpdate" component={AddOrUpdateScreen} />
+            <Stack.Screen
+              name="AddOrUpdate"
+              component={AddOrUpdateScreen}
+              options={{ presentation: "modal" }}
+            />
           </Stack.Navigator>
         </NavigationContainer>
       </Provider>

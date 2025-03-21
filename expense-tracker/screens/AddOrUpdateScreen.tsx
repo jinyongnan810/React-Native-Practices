@@ -7,7 +7,7 @@ import {
   AddOrUpdateScreenRouteProp,
 } from "../App";
 import MyButton from "../components/MyButton";
-import { addExpense, updateExpense } from "../store/expenses";
+import { addExpense, removeExpense, updateExpense } from "../store/expenses";
 import { RootState } from "../store/store";
 
 const AddOrUpdateScreen = () => {
@@ -36,11 +36,16 @@ const AddOrUpdateScreen = () => {
   return (
     <View style={styles.container}>
       <View style={styles.buttons}>
-        <MyButton isPrimary={false} onClick={() => {}}>
+        <MyButton
+          type="secondary"
+          onClick={() => {
+            navigation.goBack();
+          }}
+        >
           Cancel
         </MyButton>
         <MyButton
-          isPrimary={true}
+          type="primary"
           onClick={() => {
             if (title.trim() === "" || amount.trim() === "" || isNaN(+amount)) {
               return;
@@ -50,6 +55,7 @@ const AddOrUpdateScreen = () => {
             } else {
               dispatch(addExpense({ title, amount: +amount }));
             }
+            navigation.goBack();
           }}
         >
           {item ? "Update" : "Add"}
@@ -74,6 +80,17 @@ const AddOrUpdateScreen = () => {
           keyboardType="numeric"
         />
       </View>
+      {item && (
+        <MyButton
+          type="danger"
+          onClick={() => {
+            dispatch(removeExpense(item.id));
+            navigation.goBack();
+          }}
+        >
+          Delete
+        </MyButton>
+      )}
     </View>
   );
 };
@@ -82,6 +99,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
+    paddingBottom: 48,
   },
   buttons: {
     maxWidth: 500,
@@ -96,6 +114,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   input: {
+    fontSize: 24,
+    height: 48,
     borderWidth: 1,
     borderColor: "#ccc",
     padding: 8,

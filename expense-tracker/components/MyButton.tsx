@@ -1,13 +1,15 @@
 import React from "react";
 import { Platform, Pressable, StyleSheet, Text } from "react-native";
 import Colors from "../constants";
+type ButtonType = "primary" | "secondary" | "danger";
 type Props = {
   children: React.ReactNode;
   onClick: () => void;
-  isPrimary: boolean;
+  type: ButtonType;
 };
 
-const MyButton = ({ children, onClick, isPrimary }: Props) => {
+const MyButton = ({ children, onClick, type }: Props) => {
+  const backgroundColor = getBackgroundColor(type);
   return (
     <Pressable
       onPress={onClick}
@@ -21,19 +23,26 @@ const MyButton = ({ children, onClick, isPrimary }: Props) => {
       <Text
         style={[
           styles.primary,
-          isPrimary
-            ? {
-                backgroundColor: Colors.primary,
-              }
-            : {
-                backgroundColor: Colors.secondary,
-              },
+          {
+            backgroundColor,
+          },
         ]}
       >
         {children}
       </Text>
     </Pressable>
   );
+};
+
+const getBackgroundColor = (type: ButtonType) => {
+  switch (type) {
+    case "primary":
+      return Colors.primary;
+    case "secondary":
+      return Colors.secondary;
+    case "danger":
+      return Colors.red;
+  }
 };
 
 const styles = StyleSheet.create({
