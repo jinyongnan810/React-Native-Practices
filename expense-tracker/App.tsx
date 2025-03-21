@@ -1,6 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, RouteProp } from "@react-navigation/native";
 import {
   createNativeStackNavigator,
   NativeStackNavigationProp,
@@ -17,11 +17,15 @@ import OtherScreen from "./screens/OtherScreen";
 import { store } from "./store/store";
 export type RootStackParamList = {
   Home: undefined;
-  "Add Expense": undefined;
+  AddOrUpdate: { id?: string };
 };
 export type AddOrUpdateScreenNavigationProps = NativeStackNavigationProp<
   RootStackParamList,
-  "Add Expense"
+  "AddOrUpdate"
+>;
+export type AddOrUpdateScreenRouteProp = RouteProp<
+  RootStackParamList,
+  "AddOrUpdate"
 >;
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator();
@@ -90,13 +94,7 @@ export default function App() {
                 headerShown: false,
               }}
             />
-            <Stack.Screen
-              name="Add Expense"
-              component={AddOrUpdateScreen}
-              options={{
-                title: "Add Expense",
-              }}
-            />
+            <Stack.Screen name="AddOrUpdate" component={AddOrUpdateScreen} />
           </Stack.Navigator>
         </NavigationContainer>
       </Provider>

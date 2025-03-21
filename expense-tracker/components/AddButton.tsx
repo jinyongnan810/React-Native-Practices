@@ -8,7 +8,7 @@ const AddButton = () => {
   const navigation = useNavigation<AddOrUpdateScreenNavigationProps>();
   return (
     <Pressable
-      onPress={() => navigation.navigate("Add Expense")}
+      onPress={() => navigation.navigate("AddOrUpdate", {})}
       android_ripple={{ color: "#f0f0f0" }}
       style={({ pressed }) => [
         {

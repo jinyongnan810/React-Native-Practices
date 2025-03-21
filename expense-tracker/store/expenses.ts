@@ -8,13 +8,13 @@ const initialState: ExpensesState = {
       id: "1",
       title: "Groceries",
       amount: 100,
-      date: new Date(),
+      date: Date.now(),
     },
     {
       id: "2",
       title: "Gas",
       amount: 50,
-      date: new Date(),
+      date: Date.now(),
     },
   ],
 };
@@ -29,7 +29,7 @@ export const expensesSlice = createSlice({
       state.expenses.push({
         ...action.payload,
         id: Math.random().toString(),
-        date: new Date(),
+        date: Date.now(),
       });
     },
     removeExpense: (state, action: PayloadAction<string>) => {

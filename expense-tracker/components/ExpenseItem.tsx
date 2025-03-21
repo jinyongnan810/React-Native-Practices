@@ -1,20 +1,32 @@
+import { useNavigation } from "@react-navigation/native";
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { Platform, Pressable, StyleSheet, Text, View } from "react-native";
+import { AddOrUpdateScreenNavigationProps } from "../App";
 import Colors from "../constants";
 type Props = {
   item: Expense;
 };
 const ExpenseItem = ({ item }: Props) => {
   const { id, title, amount, date } = item;
-  const formattedDate = date.toISOString().split("T")[0];
+  const formattedDate = new Date(date).toISOString().split("T")[0];
+  const navigation = useNavigation<AddOrUpdateScreenNavigationProps>();
   return (
-    <View style={styles.container}>
+    <Pressable
+      onPress={() => navigation.navigate("AddOrUpdate", { id: id })}
+      android_ripple={{ color: "#f0f0f0" }}
+      style={({ pressed }) => [
+        {
+          opacity: Platform.OS == "ios" && pressed ? 0.6 : 1,
+        },
+        styles.container,
+      ]}
+    >
       <View style={styles.titleAndDate}>
         <Text style={styles.title}>{title}</Text>
         <Text style={styles.date}>{formattedDate}</Text>
       </View>
       <Text style={styles.amount}>{amount.toFixed(2)}</Text>
-    </View>
+    </Pressable>
   );
 };
 
