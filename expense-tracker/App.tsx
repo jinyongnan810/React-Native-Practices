@@ -1,17 +1,27 @@
 import { Ionicons } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import {
+  createNativeStackNavigator,
+  NativeStackNavigationProp,
+} from "@react-navigation/native-stack";
 import { StatusBar } from "expo-status-bar";
 import React from "react";
 import { StyleSheet } from "react-native";
 import { Provider } from "react-redux";
+import AddButton from "./components/AddButton";
+import AddOrUpdateScreen from "./screens/AddOrUpdateScreen";
 import HomeScreen from "./screens/HomeScreen";
 import OtherScreen from "./screens/OtherScreen";
 import { store } from "./store/store";
 export type RootStackParamList = {
   Home: undefined;
+  "Add Expense": undefined;
 };
+export type AddOrUpdateScreenNavigationProps = NativeStackNavigationProp<
+  RootStackParamList,
+  "Add Expense"
+>;
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator();
 
@@ -23,6 +33,7 @@ export default function App() {
           backgroundColor: "#2980b9",
         },
         headerTintColor: "#fff",
+        headerRight: () => <AddButton />,
         sceneStyle: {
           backgroundColor: "#3498db",
         },
@@ -76,6 +87,13 @@ export default function App() {
               options={{
                 title: "Recent Expenses",
                 headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name="Add Expense"
+              component={AddOrUpdateScreen}
+              options={{
+                title: "Add Expense",
               }}
             />
           </Stack.Navigator>
