@@ -1,6 +1,6 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
-import React, { useEffect } from "react";
-import { StyleSheet, TextInput, View } from "react-native";
+import React, { useEffect, useMemo } from "react";
+import { Button, StyleSheet, TextInput, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import {
   AddOrUpdateScreenNavigationProps,
@@ -23,19 +23,56 @@ const AddOrUpdateScreen = () => {
 
   const dispatch = useDispatch();
 
+  const saveButton = useMemo(() => {
+    return (
+      <Button
+        title={item ? "Save" : "Add"}
+        onPress={() => {
+          if (title.trim() === "" || amount.trim() === "" || isNaN(+amount)) {
+            return;
+          }
+          if (item) {
+            dispatch(updateExpense({ id: item.id, title, amount: +amount }));
+          } else {
+            dispatch(addExpense({ title, amount: +amount }));
+          }
+          navigation.goBack();
+        }}
+        color={"#fff"}
+      />
+    );
+  }, [title, amount]);
+  const cancelButton = useMemo(() => {
+    return (
+      <Button
+        title="Cancel"
+        onPress={() => {
+          navigation.goBack();
+        }}
+        color={"#fff"}
+      />
+    );
+  }, []);
+
   useEffect(() => {
     if (!item) {
-      navigation.setOptions({ title: "Add New Expense" });
+      navigation.setOptions({
+        title: "Add New Expense",
+        headerLeft: () => cancelButton,
+        headerRight: () => saveButton,
+      });
     } else {
       navigation.setOptions({
         title: item.title,
+        headerLeft: () => cancelButton,
+        headerRight: () => saveButton,
       });
     }
-  }, []);
+  }, [title, amount]);
 
   return (
     <View style={styles.container}>
-      <View style={styles.buttons}>
+      {/* <View style={styles.buttons}>
         <MyButton
           type="secondary"
           onClick={() => {
@@ -60,7 +97,7 @@ const AddOrUpdateScreen = () => {
         >
           {item ? "Update" : "Add"}
         </MyButton>
-      </View>
+      </View> */}
       <View style={styles.inputs}>
         <TextInput
           style={styles.input}
