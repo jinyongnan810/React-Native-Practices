@@ -4,6 +4,7 @@ import {
   Button,
   Keyboard,
   StyleSheet,
+  Text,
   TouchableWithoutFeedback,
   View,
 } from "react-native";
@@ -25,6 +26,7 @@ const AddOrUpdateScreen = () => {
   const item = useSelector((state: RootState) =>
     state.expenses.expenses.find((v) => v.id === id)
   );
+  const isEditMode = !!item;
   const itemDate = new Date(item?.date ?? Date.now())
     .toISOString()
     .split("T")[0];
@@ -33,34 +35,49 @@ const AddOrUpdateScreen = () => {
   const [date, setDate] = React.useState(itemDate || "");
   const [amount, setAmount] = React.useState(item?.amount.toString() || "");
 
+  const [isTitleValid, setIsTitleValid] = React.useState(isEditMode);
+  const [isDateValid, setIsDateValid] = React.useState(isEditMode);
+  const [isAmountValid, setIsAmountValid] = React.useState(isEditMode);
+
+  const checkValid = () => {
+    const dateObj = new Date(date);
+    setIsTitleValid(title.trim() !== "");
+    setIsDateValid(!isNaN(dateObj.getTime()));
+    setIsAmountValid(!isNaN(+amount) && +amount > 0);
+  };
+
+  useEffect(() => {
+    checkValid();
+  }, [title, date, amount]);
+
   const dispatch = useDispatch();
 
   const saveButton = useMemo(() => {
     return (
       <Button
         title={item ? "Save" : "Add"}
+        disabled={!isTitleValid || !isDateValid || !isAmountValid}
         onPress={() => {
           const dateObj = new Date(date);
-          if (
-            title.trim() === "" ||
-            amount.trim() === "" ||
-            isNaN(+amount) ||
-            Number.isNaN(dateObj.getTime())
-          ) {
+          if (!isAmountValid || !isDateValid || !isTitleValid) {
             return;
           }
           if (item) {
             dispatch(
               updateExpense({
                 id: item.id,
-                title,
+                title: title.trim(),
                 amount: +amount,
                 date: dateObj.getTime(),
               })
             );
           } else {
             dispatch(
-              addExpense({ title, amount: +amount, date: dateObj.getTime() })
+              addExpense({
+                title: title.trim(),
+                amount: +amount,
+                date: dateObj.getTime(),
+              })
             );
           }
           navigation.goBack();
@@ -68,7 +85,7 @@ const AddOrUpdateScreen = () => {
         color={"#fff"}
       />
     );
-  }, [title, amount, date]);
+  }, [title, amount, date, isTitleValid, isDateValid, isAmountValid]);
   const cancelButton = useMemo(() => {
     return (
       <Button
@@ -150,6 +167,19 @@ const AddOrUpdateScreen = () => {
               type="decimal-pad"
             />
           </View>
+          {!isTitleValid && (
+            <Text style={styles.errorText}>Title is required.</Text>
+          )}
+          {!isDateValid && (
+            <Text style={styles.errorText}>
+              Date must in the format of YYYY-MM-DD.
+            </Text>
+          )}
+          {!isAmountValid && (
+            <Text style={styles.errorText}>
+              Amount must be a positive number.
+            </Text>
+          )}
         </View>
 
         <Spacer />
@@ -191,6 +221,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     gap: 16,
+  },
+  errorText: {
+    color: "#fff",
+    fontSize: 14,
+    marginTop: 4,
+    marginBottom: 8,
   },
 });
 
