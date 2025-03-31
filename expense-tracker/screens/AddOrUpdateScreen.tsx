@@ -1,12 +1,21 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import React, { useEffect, useMemo } from "react";
-import { Button, StyleSheet, TextInput, View } from "react-native";
+import {
+  Button,
+  Keyboard,
+  StyleSheet,
+  Text,
+  TouchableWithoutFeedback,
+  View,
+} from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import {
   AddOrUpdateScreenNavigationProps,
   AddOrUpdateScreenRouteProp,
 } from "../App";
 import MyButton from "../components/MyButton";
+import MyInput from "../components/MyInput";
+import Spacer from "../components/Spacer";
 import { addExpense, removeExpense, updateExpense } from "../store/expenses";
 import { RootState } from "../store/store";
 
@@ -17,9 +26,29 @@ const AddOrUpdateScreen = () => {
   const item = useSelector((state: RootState) =>
     state.expenses.expenses.find((v) => v.id === id)
   );
+  const isEditMode = !!item;
+  const itemDate = new Date(item?.date ?? Date.now())
+    .toISOString()
+    .split("T")[0];
 
   const [title, setTitle] = React.useState(item?.title || "");
+  const [date, setDate] = React.useState(itemDate || "");
   const [amount, setAmount] = React.useState(item?.amount.toString() || "");
+
+  const [isTitleValid, setIsTitleValid] = React.useState(isEditMode);
+  const [isDateValid, setIsDateValid] = React.useState(isEditMode);
+  const [isAmountValid, setIsAmountValid] = React.useState(isEditMode);
+
+  const checkValid = () => {
+    const dateObj = new Date(date);
+    setIsTitleValid(title.trim() !== "");
+    setIsDateValid(!isNaN(dateObj.getTime()));
+    setIsAmountValid(!isNaN(+amount) && +amount > 0);
+  };
+
+  useEffect(() => {
+    checkValid();
+  }, [title, date, amount]);
 
   const dispatch = useDispatch();
 
@@ -27,21 +56,36 @@ const AddOrUpdateScreen = () => {
     return (
       <Button
         title={item ? "Save" : "Add"}
+        disabled={!isTitleValid || !isDateValid || !isAmountValid}
         onPress={() => {
-          if (title.trim() === "" || amount.trim() === "" || isNaN(+amount)) {
+          const dateObj = new Date(date);
+          if (!isAmountValid || !isDateValid || !isTitleValid) {
             return;
           }
           if (item) {
-            dispatch(updateExpense({ id: item.id, title, amount: +amount }));
+            dispatch(
+              updateExpense({
+                id: item.id,
+                title: title.trim(),
+                amount: +amount,
+                date: dateObj.getTime(),
+              })
+            );
           } else {
-            dispatch(addExpense({ title, amount: +amount }));
+            dispatch(
+              addExpense({
+                title: title.trim(),
+                amount: +amount,
+                date: dateObj.getTime(),
+              })
+            );
           }
           navigation.goBack();
         }}
         color={"#fff"}
       />
     );
-  }, [title, amount]);
+  }, [title, amount, date, isTitleValid, isDateValid, isAmountValid]);
   const cancelButton = useMemo(() => {
     return (
       <Button
@@ -68,11 +112,12 @@ const AddOrUpdateScreen = () => {
         headerRight: () => saveButton,
       });
     }
-  }, [title, amount]);
+  }, [title, amount, date]);
 
   return (
-    <View style={styles.container}>
-      {/* <View style={styles.buttons}>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={styles.container}>
+        {/* <View style={styles.buttons}>
         <MyButton
           type="secondary"
           onClick={() => {
@@ -98,37 +143,60 @@ const AddOrUpdateScreen = () => {
           {item ? "Update" : "Add"}
         </MyButton>
       </View> */}
-      <View style={styles.inputs}>
-        <TextInput
-          style={styles.input}
-          placeholder="Expense title"
-          value={title}
-          autoCorrect={false}
-          autoComplete="off"
-          onChangeText={setTitle}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Amount"
-          value={amount}
-          autoCorrect={false}
-          autoComplete="off"
-          onChangeText={setAmount}
-          keyboardType="numeric"
-        />
+        <View style={styles.inputs}>
+          <MyInput
+            label="Expense title"
+            value={title}
+            onSetValue={setTitle}
+            type="default"
+          />
+          <View style={styles.dateAndAmount}>
+            <MyInput
+              style={{ flex: 1 }}
+              label="Date"
+              value={date}
+              onSetValue={setDate}
+              type="default"
+              placeholder="YYYY-MM-DD"
+            />
+            <MyInput
+              style={{ flex: 1 }}
+              label="Amount"
+              value={amount}
+              onSetValue={setAmount}
+              type="decimal-pad"
+            />
+          </View>
+          {!isTitleValid && (
+            <Text style={styles.errorText}>Title is required.</Text>
+          )}
+          {!isDateValid && (
+            <Text style={styles.errorText}>
+              Date must in the format of YYYY-MM-DD.
+            </Text>
+          )}
+          {!isAmountValid && (
+            <Text style={styles.errorText}>
+              Amount must be a positive number.
+            </Text>
+          )}
+        </View>
+
+        <Spacer />
+
+        {item && (
+          <MyButton
+            type="danger"
+            onClick={() => {
+              dispatch(removeExpense(item.id));
+              navigation.goBack();
+            }}
+          >
+            Delete
+          </MyButton>
+        )}
       </View>
-      {item && (
-        <MyButton
-          type="danger"
-          onClick={() => {
-            dispatch(removeExpense(item.id));
-            navigation.goBack();
-          }}
-        >
-          Delete
-        </MyButton>
-      )}
-    </View>
+    </TouchableWithoutFeedback>
   );
 };
 
@@ -146,19 +214,19 @@ const styles = StyleSheet.create({
     marginBottom: 32,
   },
   inputs: {
-    flex: 1,
     maxWidth: 500,
     paddingHorizontal: 16,
   },
-  input: {
-    fontSize: 24,
-    height: 48,
-    borderWidth: 1,
-    borderColor: "#ccc",
-    padding: 8,
-    marginBottom: 16,
-    borderRadius: 8,
+  dateAndAmount: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    gap: 16,
+  },
+  errorText: {
     color: "#fff",
+    fontSize: 14,
+    marginTop: 4,
+    marginBottom: 8,
   },
 });
 
