@@ -1,12 +1,19 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import React, { useEffect, useMemo } from "react";
-import { Button, StyleSheet, TextInput, View } from "react-native";
+import {
+  Button,
+  Keyboard,
+  StyleSheet,
+  TouchableWithoutFeedback,
+  View,
+} from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import {
   AddOrUpdateScreenNavigationProps,
   AddOrUpdateScreenRouteProp,
 } from "../App";
 import MyButton from "../components/MyButton";
+import MyInput from "../components/MyInput";
 import { addExpense, removeExpense, updateExpense } from "../store/expenses";
 import { RootState } from "../store/store";
 
@@ -71,8 +78,9 @@ const AddOrUpdateScreen = () => {
   }, [title, amount]);
 
   return (
-    <View style={styles.container}>
-      {/* <View style={styles.buttons}>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={styles.container}>
+        {/* <View style={styles.buttons}>
         <MyButton
           type="secondary"
           onClick={() => {
@@ -98,37 +106,33 @@ const AddOrUpdateScreen = () => {
           {item ? "Update" : "Add"}
         </MyButton>
       </View> */}
-      <View style={styles.inputs}>
-        <TextInput
-          style={styles.input}
-          placeholder="Expense title"
-          value={title}
-          autoCorrect={false}
-          autoComplete="off"
-          onChangeText={setTitle}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Amount"
-          value={amount}
-          autoCorrect={false}
-          autoComplete="off"
-          onChangeText={setAmount}
-          keyboardType="numeric"
-        />
+        <View style={styles.inputs}>
+          <MyInput
+            label="Expense title"
+            value={title}
+            onSetValue={setTitle}
+            type="default"
+          />
+          <MyInput
+            label="Amount"
+            value={amount}
+            onSetValue={setAmount}
+            type="decimal-pad"
+          />
+        </View>
+        {item && (
+          <MyButton
+            type="danger"
+            onClick={() => {
+              dispatch(removeExpense(item.id));
+              navigation.goBack();
+            }}
+          >
+            Delete
+          </MyButton>
+        )}
       </View>
-      {item && (
-        <MyButton
-          type="danger"
-          onClick={() => {
-            dispatch(removeExpense(item.id));
-            navigation.goBack();
-          }}
-        >
-          Delete
-        </MyButton>
-      )}
-    </View>
+    </TouchableWithoutFeedback>
   );
 };
 
@@ -149,16 +153,6 @@ const styles = StyleSheet.create({
     flex: 1,
     maxWidth: 500,
     paddingHorizontal: 16,
-  },
-  input: {
-    fontSize: 24,
-    height: 48,
-    borderWidth: 1,
-    borderColor: "#ccc",
-    padding: 8,
-    marginBottom: 16,
-    borderRadius: 8,
-    color: "#fff",
   },
 });
 
