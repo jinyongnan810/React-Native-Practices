@@ -40,20 +40,35 @@ const AddOrUpdateScreen = () => {
       <Button
         title={item ? "Save" : "Add"}
         onPress={() => {
-          if (title.trim() === "" || amount.trim() === "" || isNaN(+amount)) {
+          const dateObj = new Date(date);
+          if (
+            title.trim() === "" ||
+            amount.trim() === "" ||
+            isNaN(+amount) ||
+            Number.isNaN(dateObj.getTime())
+          ) {
             return;
           }
           if (item) {
-            dispatch(updateExpense({ id: item.id, title, amount: +amount }));
+            dispatch(
+              updateExpense({
+                id: item.id,
+                title,
+                amount: +amount,
+                date: dateObj.getTime(),
+              })
+            );
           } else {
-            dispatch(addExpense({ title, amount: +amount }));
+            dispatch(
+              addExpense({ title, amount: +amount, date: dateObj.getTime() })
+            );
           }
           navigation.goBack();
         }}
         color={"#fff"}
       />
     );
-  }, [title, amount]);
+  }, [title, amount, date]);
   const cancelButton = useMemo(() => {
     return (
       <Button
@@ -80,7 +95,7 @@ const AddOrUpdateScreen = () => {
         headerRight: () => saveButton,
       });
     }
-  }, [title, amount]);
+  }, [title, amount, date]);
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>

@@ -84,12 +84,11 @@ export const expensesSlice = createSlice({
   reducers: {
     addExpense: (
       state,
-      action: PayloadAction<{ title: string; amount: number }>
+      action: PayloadAction<{ title: string; amount: number; date: number }>
     ) => {
       state.expenses.push({
         ...action.payload,
         id: Math.random().toString(),
-        date: Date.now(),
       });
     },
     removeExpense: (state, action: PayloadAction<string>) => {
@@ -99,7 +98,12 @@ export const expensesSlice = createSlice({
     },
     updateExpense: (
       state,
-      action: PayloadAction<{ id: string; title: string; amount: number }>
+      action: PayloadAction<{
+        id: string;
+        title: string;
+        amount: number;
+        date: number;
+      }>
     ) => {
       const expenseIndex = state.expenses.findIndex(
         (expense) => expense.id === action.payload.id
@@ -107,6 +111,7 @@ export const expensesSlice = createSlice({
       if (expenseIndex !== -1) {
         state.expenses[expenseIndex].title = action.payload.title;
         state.expenses[expenseIndex].amount = action.payload.amount;
+        state.expenses[expenseIndex].date = action.payload.date;
       }
     },
   },
