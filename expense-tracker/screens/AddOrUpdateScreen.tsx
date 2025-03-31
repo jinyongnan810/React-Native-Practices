@@ -14,6 +14,7 @@ import {
 } from "../App";
 import MyButton from "../components/MyButton";
 import MyInput from "../components/MyInput";
+import Spacer from "../components/Spacer";
 import { addExpense, removeExpense, updateExpense } from "../store/expenses";
 import { RootState } from "../store/store";
 
@@ -24,8 +25,12 @@ const AddOrUpdateScreen = () => {
   const item = useSelector((state: RootState) =>
     state.expenses.expenses.find((v) => v.id === id)
   );
+  const itemDate = new Date(item?.date ?? Date.now())
+    .toISOString()
+    .split("T")[0];
 
   const [title, setTitle] = React.useState(item?.title || "");
+  const [date, setDate] = React.useState(itemDate || "");
   const [amount, setAmount] = React.useState(item?.amount.toString() || "");
 
   const dispatch = useDispatch();
@@ -113,13 +118,27 @@ const AddOrUpdateScreen = () => {
             onSetValue={setTitle}
             type="default"
           />
-          <MyInput
-            label="Amount"
-            value={amount}
-            onSetValue={setAmount}
-            type="decimal-pad"
-          />
+          <View style={styles.dateAndAmount}>
+            <MyInput
+              style={{ flex: 1 }}
+              label="Date"
+              value={date}
+              onSetValue={setDate}
+              type="default"
+              placeholder="YYYY-MM-DD"
+            />
+            <MyInput
+              style={{ flex: 1 }}
+              label="Amount"
+              value={amount}
+              onSetValue={setAmount}
+              type="decimal-pad"
+            />
+          </View>
         </View>
+
+        <Spacer />
+
         {item && (
           <MyButton
             type="danger"
@@ -150,9 +169,13 @@ const styles = StyleSheet.create({
     marginBottom: 32,
   },
   inputs: {
-    flex: 1,
     maxWidth: 500,
     paddingHorizontal: 16,
+  },
+  dateAndAmount: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    gap: 16,
   },
 });
 

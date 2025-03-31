@@ -1,40 +1,55 @@
 import React from "react";
 import {
   KeyboardTypeOptions,
+  StyleProp,
   StyleSheet,
   Text,
   TextInput,
+  TextStyle,
   View,
 } from "react-native";
 type Props = {
+  style?: StyleProp<TextStyle>;
   label: string;
   type: KeyboardTypeOptions;
+  placeholder?: string;
+  maxLength?: number;
   value: string;
   onSetValue: (value: string) => void;
 };
-const MyInput = ({ label, type, value, onSetValue }: Props) => {
+const MyInput = ({
+  style,
+  label,
+  type,
+  placeholder,
+  maxLength,
+  value,
+  onSetValue,
+}: Props) => {
   return (
-    <View>
-      <Text>{label}</Text>
+    <View style={[styles.container, style]}>
+      <Text style={styles.label}>{label}</Text>
       <TextInput
         style={styles.input}
         keyboardType={type}
-        placeholder={label}
+        placeholder={placeholder ?? label}
         value={value}
         onChange={(e) => onSetValue(e.nativeEvent.text)}
         autoCorrect={false}
         autoComplete="off"
+        maxLength={maxLength}
+        placeholderTextColor={"#aaa"}
       />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
+  container: {},
+  label: {
+    fontSize: 18,
+    marginBottom: 8,
+    color: "#fff",
   },
   input: {
     fontSize: 24,
