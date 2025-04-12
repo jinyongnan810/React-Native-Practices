@@ -4,10 +4,12 @@ import { Expense } from "../models/expense";
 
 interface ExpensesState {
   expenses: Expense[];
+  isLoading: boolean;
 }
 
 const initialState: ExpensesState = {
   expenses: [],
+  isLoading: true,
 };
 
 // Async thunk to fetch expenses from an API
@@ -55,6 +57,7 @@ export const expensesSlice = createSlice({
       fetchExpenses.fulfilled,
       (state, action: PayloadAction<Expense[]>) => {
         state.expenses = action.payload;
+        state.isLoading = false;
       }
     );
   },

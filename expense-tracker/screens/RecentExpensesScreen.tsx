@@ -3,6 +3,7 @@ import { FlatList, StyleSheet, View } from "react-native";
 import { useSelector } from "react-redux";
 import ExpenseItem from "../components/ExpenseItem";
 import ExpenseSummary from "../components/ExpenseSummary";
+import Loading from "../components/Loading";
 import { getRecentExpenses, sortExpenses } from "../helper/FilterHelper";
 import { fetchExpenses } from "../store/expenses";
 import { useAppDispatch } from "../store/hooks";
@@ -10,6 +11,7 @@ import { RootState } from "../store/store";
 
 const RecentExpensesScreen = () => {
   const expenses = useSelector((state: RootState) => state.expenses.expenses);
+  const isLoading = useSelector((state: RootState) => state.expenses.isLoading);
   const recent = getRecentExpenses(expenses);
   const total = recent.reduce((acc, cur) => acc + cur.amount, 0);
   const dispatch = useAppDispatch();
@@ -17,6 +19,9 @@ const RecentExpensesScreen = () => {
   useEffect(() => {
     dispatch(fetchExpenses());
   }, [dispatch]);
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <View style={styles.container}>

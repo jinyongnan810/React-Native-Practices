@@ -44,6 +44,8 @@ const AddOrUpdateScreen = () => {
   const [isDateValid, setIsDateValid] = React.useState(isEditMode);
   const [isAmountValid, setIsAmountValid] = React.useState(isEditMode);
 
+  const [isLoading, setIsLoading] = React.useState(false);
+
   const checkValid = () => {
     const dateObj = new Date(date);
     setIsTitleValid(title.trim() !== "");
@@ -58,15 +60,28 @@ const AddOrUpdateScreen = () => {
   const dispatch = useDispatch();
 
   const saveButton = useMemo(() => {
+    function getTitle() {
+      if (item && isLoading) {
+        return "Updating...";
+      } else if (isLoading) {
+        return "Adding...";
+      }
+      if (item) {
+        return "Update";
+      }
+      return "Add";
+    }
+    let buttonTitle = getTitle();
     return (
       <Button
-        title={item ? "Save" : "Add"}
-        disabled={!isTitleValid || !isDateValid || !isAmountValid}
+        title={buttonTitle}
+        disabled={!isTitleValid || !isDateValid || !isAmountValid || isLoading}
         onPress={async () => {
           const dateObj = new Date(date);
           if (!isAmountValid || !isDateValid || !isTitleValid) {
             return;
           }
+          setIsLoading(true);
           if (item) {
             const updatedExpense = await updateExpenseApi(item.id, {
               title: title.trim(),
@@ -93,18 +108,27 @@ const AddOrUpdateScreen = () => {
         color={"#fff"}
       />
     );
-  }, [title, amount, date, isTitleValid, isDateValid, isAmountValid]);
+  }, [
+    title,
+    amount,
+    date,
+    isTitleValid,
+    isDateValid,
+    isAmountValid,
+    isLoading,
+  ]);
   const cancelButton = useMemo(() => {
     return (
       <Button
         title="Cancel"
+        disabled={isLoading}
         onPress={() => {
           navigation.goBack();
         }}
         color={"#fff"}
       />
     );
-  }, []);
+  }, [isLoading]);
 
   useEffect(() => {
     if (!item) {
@@ -120,7 +144,7 @@ const AddOrUpdateScreen = () => {
         headerRight: () => saveButton,
       });
     }
-  }, [title, amount, date]);
+  }, [title, amount, date, isLoading]);
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -195,7 +219,9 @@ const AddOrUpdateScreen = () => {
         {item && (
           <MyButton
             type="danger"
+            disabled={isLoading}
             onClick={async () => {
+              setIsLoading(true);
               await deleteExpenseApi(item.id);
               dispatch(removeExpense(item.id));
               navigation.goBack();

@@ -6,13 +6,15 @@ type Props = {
   children: React.ReactNode;
   onClick: () => void;
   type: ButtonType;
+  disabled?: boolean;
 };
 
-const MyButton = ({ children, onClick, type }: Props) => {
+const MyButton = ({ children, onClick, type, disabled }: Props) => {
   const backgroundColor = getBackgroundColor(type);
   return (
     <Pressable
       onPress={onClick}
+      disabled={disabled}
       android_ripple={{ color: "#f0f0f0" }}
       style={({ pressed }) => [
         {
