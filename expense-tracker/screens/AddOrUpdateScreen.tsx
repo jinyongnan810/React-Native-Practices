@@ -16,6 +16,11 @@ import {
 import MyButton from "../components/MyButton";
 import MyInput from "../components/MyInput";
 import Spacer from "../components/Spacer";
+import {
+  addExpenseApi,
+  deleteExpenseApi,
+  updateExpenseApi,
+} from "../helper/HttpHelper";
 import { addExpense, removeExpense, updateExpense } from "../store/expenses";
 import { RootState } from "../store/store";
 
@@ -57,28 +62,31 @@ const AddOrUpdateScreen = () => {
       <Button
         title={item ? "Save" : "Add"}
         disabled={!isTitleValid || !isDateValid || !isAmountValid}
-        onPress={() => {
+        onPress={async () => {
           const dateObj = new Date(date);
           if (!isAmountValid || !isDateValid || !isTitleValid) {
             return;
           }
           if (item) {
-            dispatch(
-              updateExpense({
-                id: item.id,
-                title: title.trim(),
-                amount: +amount,
-                date: dateObj.getTime(),
-              })
-            );
+            const updatedExpense = await updateExpenseApi(item.id, {
+              title: title.trim(),
+              amount: +amount,
+              date: dateObj.getTime(),
+            });
+            if (!updatedExpense) {
+              return;
+            }
+            dispatch(updateExpense(updatedExpense));
           } else {
-            dispatch(
-              addExpense({
-                title: title.trim(),
-                amount: +amount,
-                date: dateObj.getTime(),
-              })
-            );
+            const newExpense = await addExpenseApi({
+              title: title.trim(),
+              amount: +amount,
+              date: dateObj.getTime(),
+            });
+            if (!newExpense) {
+              return;
+            }
+            dispatch(addExpense(newExpense));
           }
           navigation.goBack();
         }}
@@ -187,7 +195,8 @@ const AddOrUpdateScreen = () => {
         {item && (
           <MyButton
             type="danger"
-            onClick={() => {
+            onClick={async () => {
+              await deleteExpenseApi(item.id);
               dispatch(removeExpense(item.id));
               navigation.goBack();
             }}
