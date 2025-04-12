@@ -89,6 +89,7 @@ const AddOrUpdateScreen = () => {
               date: dateObj.getTime(),
             });
             if (!updatedExpense) {
+              setIsLoading(false);
               return;
             }
             dispatch(updateExpense(updatedExpense));
@@ -99,6 +100,7 @@ const AddOrUpdateScreen = () => {
               date: dateObj.getTime(),
             });
             if (!newExpense) {
+              setIsLoading(false);
               return;
             }
             dispatch(addExpense(newExpense));
@@ -144,7 +146,15 @@ const AddOrUpdateScreen = () => {
         headerRight: () => saveButton,
       });
     }
-  }, [title, amount, date, isLoading]);
+  }, [
+    title,
+    amount,
+    date,
+    isTitleValid,
+    isDateValid,
+    isAmountValid,
+    isLoading,
+  ]);
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -223,6 +233,7 @@ const AddOrUpdateScreen = () => {
             onClick={async () => {
               setIsLoading(true);
               await deleteExpenseApi(item.id);
+              setIsLoading(false);
               dispatch(removeExpense(item.id));
               navigation.goBack();
             }}

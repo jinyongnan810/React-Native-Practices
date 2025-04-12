@@ -1,6 +1,7 @@
 import { REST_URL } from "@env";
 import axios from "axios";
 import { Expense } from "../models/expense";
+import { showPopup } from "./PopupHelper";
 
 export const addExpenseApi = async (body: {
   title: string;
@@ -16,6 +17,7 @@ export const addExpenseApi = async (body: {
     };
   } catch (error) {
     console.error(error);
+    showPopup("Error", "Failed to add expense. Please try again.");
   }
 };
 
@@ -35,6 +37,7 @@ export const updateExpenseApi = async (
     };
   } catch (error) {
     console.error(error);
+    showPopup("Error", "Failed to update expense. Please try again.");
   }
 };
 
@@ -51,6 +54,7 @@ export const getExpensesApi = async (): Promise<Expense[]> => {
     return expenses;
   } catch (error) {
     console.error(error);
+    showPopup("Error", "Failed to fetch expenses. Please try again.");
   }
   return [];
 };
@@ -60,5 +64,6 @@ export const deleteExpenseApi = async (id: string): Promise<void> => {
     await axios.delete(`${REST_URL}/expenses/${id}.json`);
   } catch (error) {
     console.error(error);
+    showPopup("Error", "Failed to delete expense. Please try again.");
   }
 };
