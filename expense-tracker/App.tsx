@@ -13,11 +13,15 @@ import AddButton from "./components/AddButton";
 import Colors from "./constants";
 import AddOrUpdateScreen from "./screens/AddOrUpdateScreen";
 import OtherScreen from "./screens/AllExpensesScreen";
+import LoginScreen from "./screens/LoginScreen";
 import RecentExpensesScreen from "./screens/RecentExpensesScreen";
+import SignupScreen from "./screens/SignupScreen";
 import { store } from "./store/store";
 export type RootStackParamList = {
   Home: undefined;
   AddOrUpdate: { id?: string };
+  Login: undefined;
+  Signup: undefined;
 };
 export type AddOrUpdateScreenNavigationProps = NativeStackNavigationProp<
   RootStackParamList,
@@ -27,11 +31,32 @@ export type AddOrUpdateScreenRouteProp = RouteProp<
   RootStackParamList,
   "AddOrUpdate"
 >;
+export type LoginScreenNavigationProps = NativeStackNavigationProp<
+  RootStackParamList,
+  "Login"
+>;
+export type SignupScreenNavigationProps = NativeStackNavigationProp<
+  RootStackParamList,
+  "Signup"
+>;
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator();
 
-export default function App() {
-  const HomeTabNavigator = () => (
+function AuthStack() {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false,
+        contentStyle: { backgroundColor: Colors.secondary },
+      }}
+    >
+      <Stack.Screen name="Login" component={LoginScreen} />
+      <Stack.Screen name="Signup" component={SignupScreen} />
+    </Stack.Navigator>
+  );
+}
+function HomeTabNavigator() {
+  return (
     <Tab.Navigator
       screenOptions={{
         headerStyle: {
@@ -71,37 +96,43 @@ export default function App() {
       />
     </Tab.Navigator>
   );
+}
+function AuthenticatedStack() {
+  <Stack.Navigator
+    initialRouteName="Home"
+    screenOptions={{
+      headerStyle: {
+        backgroundColor: Colors.primary,
+      },
+      headerTintColor: "#fff",
+      contentStyle: {
+        backgroundColor: Colors.secondary,
+      },
+    }}
+  >
+    <Stack.Screen
+      name="Home"
+      component={HomeTabNavigator}
+      options={{
+        title: "Recent Expenses",
+        headerShown: false,
+      }}
+    />
+    <Stack.Screen
+      name="AddOrUpdate"
+      component={AddOrUpdateScreen}
+      options={{ presentation: "modal" }}
+    />
+  </Stack.Navigator>;
+}
+
+export default function App() {
   return (
     <>
       <StatusBar style="light" />
       <Provider store={store}>
         <NavigationContainer>
-          <Stack.Navigator
-            initialRouteName="Home"
-            screenOptions={{
-              headerStyle: {
-                backgroundColor: Colors.primary,
-              },
-              headerTintColor: "#fff",
-              contentStyle: {
-                backgroundColor: Colors.secondary,
-              },
-            }}
-          >
-            <Stack.Screen
-              name="Home"
-              component={HomeTabNavigator}
-              options={{
-                title: "Recent Expenses",
-                headerShown: false,
-              }}
-            />
-            <Stack.Screen
-              name="AddOrUpdate"
-              component={AddOrUpdateScreen}
-              options={{ presentation: "modal" }}
-            />
-          </Stack.Navigator>
+          <AuthStack />
         </NavigationContainer>
       </Provider>
     </>

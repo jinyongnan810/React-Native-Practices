@@ -8,6 +8,7 @@ import {
   TextStyle,
   View,
 } from "react-native";
+import Colors from "../constants";
 type Props = {
   style?: StyleProp<TextStyle>;
   label: string;
@@ -15,6 +16,8 @@ type Props = {
   placeholder?: string;
   maxLength?: number;
   value: string;
+  isInvalid?: boolean;
+  secure?: boolean;
   onSetValue: (value: string) => void;
 };
 const MyInput = ({
@@ -24,13 +27,17 @@ const MyInput = ({
   placeholder,
   maxLength,
   value,
+  isInvalid,
+  secure,
   onSetValue,
 }: Props) => {
   return (
     <View style={[styles.container, style]}>
-      <Text style={styles.label}>{label}</Text>
+      <Text style={[styles.label, isInvalid && styles.labelInvalid]}>
+        {label}
+      </Text>
       <TextInput
-        style={styles.input}
+        style={[styles.input]}
         keyboardType={type}
         placeholder={placeholder ?? label}
         value={value}
@@ -39,6 +46,7 @@ const MyInput = ({
         autoComplete="off"
         maxLength={maxLength}
         placeholderTextColor={"#aaa"}
+        secureTextEntry={secure}
       />
     </View>
   );
@@ -60,6 +68,9 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     borderRadius: 8,
     color: "#fff",
+  },
+  labelInvalid: {
+    color: Colors.red,
   },
 });
 
