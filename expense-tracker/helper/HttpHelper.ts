@@ -1,4 +1,4 @@
-import { REST_URL } from "@env";
+import { API_KEY, REST_URL } from "@env";
 import axios from "axios";
 import { Expense } from "../models/expense";
 import { showPopup } from "./PopupHelper";
@@ -65,5 +65,47 @@ export const deleteExpenseApi = async (id: string): Promise<void> => {
   } catch (error) {
     console.error(error);
     showPopup("Error", "Failed to delete expense. Please try again.");
+  }
+};
+
+export const signupApi = async (
+  email: string,
+  password: string
+): Promise<string | undefined> => {
+  try {
+    const response = await axios.post(
+      `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${API_KEY}`,
+      {
+        email,
+        password,
+        returnSecureToken: true,
+      }
+    );
+
+    return response.data.idToken;
+  } catch (error) {
+    console.error(error);
+    showPopup("Error", "Failed to sign up. Please try again.");
+  }
+};
+
+export const loginApi = async (
+  email: string,
+  password: string
+): Promise<string | undefined> => {
+  try {
+    const response = await axios.post(
+      `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${API_KEY}`,
+      {
+        email,
+        password,
+        returnSecureToken: true,
+      }
+    );
+
+    return response.data.idToken;
+  } catch (error) {
+    console.error(error);
+    showPopup("Error", "Failed to log in. Please try again.");
   }
 };

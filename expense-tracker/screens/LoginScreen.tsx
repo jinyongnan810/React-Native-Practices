@@ -2,6 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { LoginScreenNavigationProps } from "../App";
 import AuthContent from "../components/auth/AuthContents";
+import { loginApi } from "../helper/HttpHelper";
 
 const LoginScreen = () => {
   const navigation = useNavigation<LoginScreenNavigationProps>();
@@ -9,7 +10,9 @@ const LoginScreen = () => {
     <AuthContent
       isLogin={true}
       onSwitch={() => navigation.replace("Signup")}
-      onAuthenticate={() => {}}
+      onAuthenticate={async (email, password) => {
+        await loginApi(email, password);
+      }}
     />
   );
 };
