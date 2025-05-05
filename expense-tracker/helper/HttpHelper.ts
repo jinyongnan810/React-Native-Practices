@@ -92,14 +92,21 @@ export const signupApi = async (
         returnSecureToken: true,
       }
     );
-
-    const { idToken, email: userEmail, localId, expiresIn } = response.data;
+    console.log(JSON.stringify(response.data));
+    const {
+      idToken: token,
+      email: userEmail,
+      localId: id,
+      refreshToken,
+      expiresIn,
+    } = response.data;
     const expirationDate = Date.now() + parseInt(expiresIn) * 1000;
     const auth: Auth = {
-      id: localId,
+      id: id,
       email: userEmail,
-      token: idToken,
+      token: token,
       expirationDate: expirationDate,
+      refreshToken: refreshToken,
     };
     return auth;
   } catch (error) {
@@ -121,17 +128,57 @@ export const loginApi = async (
         returnSecureToken: true,
       }
     );
-    const { idToken, email: userEmail, localId, expiresIn } = response.data;
+    console.log(JSON.stringify(response.data));
+    const {
+      idToken: token,
+      email: userEmail,
+      localId: id,
+      refreshToken,
+      expiresIn,
+    } = response.data;
     const expirationDate = Date.now() + parseInt(expiresIn) * 1000;
     const auth: Auth = {
-      id: localId,
+      id: id,
       email: userEmail,
-      token: idToken,
+      token: token,
       expirationDate: expirationDate,
+      refreshToken: refreshToken,
     };
     return auth;
   } catch (error) {
     console.error(error);
     showPopup("Error", "Failed to log in. Please try again.");
+  }
+};
+
+export const refreshTokenApi = async (
+  authStatus: Auth
+): Promise<Auth | undefined> => {
+  try {
+    const response = await axios.post(
+      `https://securetoken.googleapis.com/v1/token?key=${API_KEY}`,
+      {
+        grant_type: "refresh_token",
+        refresh_token: authStatus.refreshToken,
+      }
+    );
+    console.log(JSON.stringify(response.data));
+    const {
+      id_token: token,
+      expires_in: expiresIn,
+      refresh_token: refreshToken,
+    } = response.data;
+    const expirationDate = Date.now() + parseInt(expiresIn) * 1000;
+    const auth: Auth = {
+      id: authStatus.id,
+      email: authStatus.email,
+      token: token,
+      expirationDate: expirationDate,
+      refreshToken: refreshToken,
+    };
+    return auth;
+  } catch (error) {
+    console.error(error);
+    showPopup("Error", "Failed to refresh token. Please try again.");
   }
 };

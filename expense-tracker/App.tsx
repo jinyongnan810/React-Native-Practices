@@ -12,12 +12,13 @@ import { Provider, useSelector } from "react-redux";
 import AddButton from "./components/AddButton";
 import LogoutButton from "./components/LogoutButton";
 import Colors from "./constants";
+import { refreshTokenApi } from "./helper/HttpHelper";
 import AddOrUpdateScreen from "./screens/AddOrUpdateScreen";
 import OtherScreen from "./screens/AllExpensesScreen";
 import LoginScreen from "./screens/LoginScreen";
 import RecentExpensesScreen from "./screens/RecentExpensesScreen";
 import SignupScreen from "./screens/SignupScreen";
-import { restoreAuth } from "./store/auth";
+import { onRefreshToken, restoreAuth } from "./store/auth";
 import { useAppDispatch } from "./store/hooks";
 import { RootState, store } from "./store/store";
 export type RootStackParamList = {
@@ -134,14 +135,35 @@ function AuthenticatedStack() {
 
 function AppStack() {
   const dispatch = useAppDispatch();
+  const authState = useSelector((state: RootState) => state.auth.authState);
+  const isAuthenticated = authState !== undefined;
+  console.log("isAuthenticated", isAuthenticated);
 
   useEffect(() => {
     dispatch(restoreAuth());
   }, [dispatch]);
-  const isAuthenticated = useSelector(
-    (state: RootState) => state.auth.authState !== undefined
-  );
-  console.log("isAuthenticated", isAuthenticated);
+
+  useEffect(() => {
+    if (!authState) {
+      return;
+    }
+    const expireAt = authState.expirationDate - Date.now();
+    if (expireAt <= 0) {
+      return;
+    }
+    console.log("Setting timeout for refresh token in ", expireAt);
+    const timeout = setTimeout(async () => {
+      const newAuthState = await refreshTokenApi(authState);
+      if (!newAuthState) {
+        return;
+      }
+      dispatch(onRefreshToken(newAuthState));
+    }, expireAt - 60000); // Refresh 1 minute before expiration
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [authState]);
+
   if (isAuthenticated) {
     return <AuthenticatedStack />;
   }

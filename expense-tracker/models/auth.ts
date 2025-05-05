@@ -3,4 +3,5 @@ export type Auth = {
   email: string;
   token: string;
   expirationDate: number;
+  refreshToken: string;
 };
