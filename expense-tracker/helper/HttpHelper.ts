@@ -1,5 +1,6 @@
 import { API_KEY, REST_URL } from "@env";
 import axios from "axios";
+import { Auth } from "../models/auth";
 import { Expense } from "../models/expense";
 import { showPopup } from "./PopupHelper";
 
@@ -71,7 +72,7 @@ export const deleteExpenseApi = async (id: string): Promise<void> => {
 export const signupApi = async (
   email: string,
   password: string
-): Promise<string | undefined> => {
+): Promise<Auth | undefined> => {
   try {
     const response = await axios.post(
       `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${API_KEY}`,
@@ -82,7 +83,15 @@ export const signupApi = async (
       }
     );
 
-    return response.data.idToken;
+    const { idToken, email: userEmail, localId, expiresIn } = response.data;
+    const expirationDate = Date.now() + parseInt(expiresIn) * 1000;
+    const auth: Auth = {
+      id: localId,
+      email: userEmail,
+      token: idToken,
+      expirationDate: expirationDate,
+    };
+    return auth;
   } catch (error) {
     console.error(error);
     showPopup("Error", "Failed to sign up. Please try again.");
@@ -92,7 +101,7 @@ export const signupApi = async (
 export const loginApi = async (
   email: string,
   password: string
-): Promise<string | undefined> => {
+): Promise<Auth | undefined> => {
   try {
     const response = await axios.post(
       `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${API_KEY}`,
@@ -102,8 +111,15 @@ export const loginApi = async (
         returnSecureToken: true,
       }
     );
-
-    return response.data.idToken;
+    const { idToken, email: userEmail, localId, expiresIn } = response.data;
+    const expirationDate = Date.now() + parseInt(expiresIn) * 1000;
+    const auth: Auth = {
+      id: localId,
+      email: userEmail,
+      token: idToken,
+      expirationDate: expirationDate,
+    };
+    return auth;
   } catch (error) {
     console.error(error);
     showPopup("Error", "Failed to log in. Please try again.");

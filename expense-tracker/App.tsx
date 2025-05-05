@@ -8,7 +8,7 @@ import {
 import { StatusBar } from "expo-status-bar";
 import React from "react";
 import { StyleSheet } from "react-native";
-import { Provider } from "react-redux";
+import { Provider, useSelector } from "react-redux";
 import AddButton from "./components/AddButton";
 import Colors from "./constants";
 import AddOrUpdateScreen from "./screens/AddOrUpdateScreen";
@@ -16,7 +16,7 @@ import OtherScreen from "./screens/AllExpensesScreen";
 import LoginScreen from "./screens/LoginScreen";
 import RecentExpensesScreen from "./screens/RecentExpensesScreen";
 import SignupScreen from "./screens/SignupScreen";
-import { store } from "./store/store";
+import { RootState, store } from "./store/store";
 export type RootStackParamList = {
   Home: undefined;
   AddOrUpdate: { id?: string };
@@ -98,32 +98,45 @@ function HomeTabNavigator() {
   );
 }
 function AuthenticatedStack() {
-  <Stack.Navigator
-    initialRouteName="Home"
-    screenOptions={{
-      headerStyle: {
-        backgroundColor: Colors.primary,
-      },
-      headerTintColor: "#fff",
-      contentStyle: {
-        backgroundColor: Colors.secondary,
-      },
-    }}
-  >
-    <Stack.Screen
-      name="Home"
-      component={HomeTabNavigator}
-      options={{
-        title: "Recent Expenses",
-        headerShown: false,
+  return (
+    <Stack.Navigator
+      initialRouteName="Home"
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: Colors.primary,
+        },
+        headerTintColor: "#fff",
+        contentStyle: {
+          backgroundColor: Colors.secondary,
+        },
       }}
-    />
-    <Stack.Screen
-      name="AddOrUpdate"
-      component={AddOrUpdateScreen}
-      options={{ presentation: "modal" }}
-    />
-  </Stack.Navigator>;
+    >
+      <Stack.Screen
+        name="Home"
+        component={HomeTabNavigator}
+        options={{
+          title: "Recent Expenses",
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="AddOrUpdate"
+        component={AddOrUpdateScreen}
+        options={{ presentation: "modal" }}
+      />
+    </Stack.Navigator>
+  );
+}
+
+function AppStack() {
+  const isAuthenticated = useSelector(
+    (state: RootState) => state.auth.authState !== undefined
+  );
+  console.log("isAuthenticated", isAuthenticated);
+  if (isAuthenticated) {
+    return <AuthenticatedStack />;
+  }
+  return <AuthStack />;
 }
 
 export default function App() {
@@ -132,7 +145,7 @@ export default function App() {
       <StatusBar style="light" />
       <Provider store={store}>
         <NavigationContainer>
-          <AuthStack />
+          <AppStack />
         </NavigationContainer>
       </Provider>
     </>
