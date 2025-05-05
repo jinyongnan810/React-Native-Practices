@@ -4,13 +4,19 @@ import { Auth } from "../models/auth";
 import { Expense } from "../models/expense";
 import { showPopup } from "./PopupHelper";
 
-export const addExpenseApi = async (body: {
-  title: string;
-  amount: number;
-  date: number;
-}): Promise<Expense | undefined> => {
+export const addExpenseApi = async (
+  body: {
+    title: string;
+    amount: number;
+    date: number;
+  },
+  token: string
+): Promise<Expense | undefined> => {
   try {
-    const response = await axios.post(`${REST_URL}/expenses.json`, body);
+    const response = await axios.post(
+      `${REST_URL}/expenses.json?auth=${token}`,
+      body
+    );
     const id = response.data.name;
     return {
       id,
@@ -28,10 +34,11 @@ export const updateExpenseApi = async (
     title: string;
     amount: number;
     date: number;
-  }
+  },
+  token: string
 ): Promise<Expense | undefined> => {
   try {
-    await axios.patch(`${REST_URL}/expenses/${id}.json`, body);
+    await axios.patch(`${REST_URL}/expenses/${id}.json?auth=${token}`, body);
     return {
       id,
       ...body,
@@ -42,9 +49,9 @@ export const updateExpenseApi = async (
   }
 };
 
-export const getExpensesApi = async (): Promise<Expense[]> => {
+export const getExpensesApi = async (token: string): Promise<Expense[]> => {
   try {
-    const response = await axios.get(`${REST_URL}/expenses.json`);
+    const response = await axios.get(`${REST_URL}/expenses.json?auth=${token}`);
     const expenses: Expense[] = [];
     for (const key in response.data) {
       expenses.push({
@@ -60,9 +67,12 @@ export const getExpensesApi = async (): Promise<Expense[]> => {
   return [];
 };
 
-export const deleteExpenseApi = async (id: string): Promise<void> => {
+export const deleteExpenseApi = async (
+  id: string,
+  token: string
+): Promise<void> => {
   try {
-    await axios.delete(`${REST_URL}/expenses/${id}.json`);
+    await axios.delete(`${REST_URL}/expenses/${id}.json?auth=${token}`);
   } catch (error) {
     console.error(error);
     showPopup("Error", "Failed to delete expense. Please try again.");

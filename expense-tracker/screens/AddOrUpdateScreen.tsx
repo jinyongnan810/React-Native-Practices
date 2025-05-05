@@ -31,6 +31,7 @@ const AddOrUpdateScreen = () => {
   const item = useSelector((state: RootState) =>
     state.expenses.expenses.find((v) => v.id === id)
   );
+  const token = useSelector((state: RootState) => state.auth.authState?.token);
   const isEditMode = !!item;
   const itemDate = new Date(item?.date ?? Date.now())
     .toISOString()
@@ -83,22 +84,29 @@ const AddOrUpdateScreen = () => {
           }
           setIsLoading(true);
           if (item) {
-            const updatedExpense = await updateExpenseApi(item.id, {
-              title: title.trim(),
-              amount: +amount,
-              date: dateObj.getTime(),
-            });
+            const updatedExpense = await updateExpenseApi(
+              item.id,
+              {
+                title: title.trim(),
+                amount: +amount,
+                date: dateObj.getTime(),
+              },
+              token ?? ""
+            );
             if (!updatedExpense) {
               setIsLoading(false);
               return;
             }
             dispatch(updateExpense(updatedExpense));
           } else {
-            const newExpense = await addExpenseApi({
-              title: title.trim(),
-              amount: +amount,
-              date: dateObj.getTime(),
-            });
+            const newExpense = await addExpenseApi(
+              {
+                title: title.trim(),
+                amount: +amount,
+                date: dateObj.getTime(),
+              },
+              token ?? ""
+            );
             if (!newExpense) {
               setIsLoading(false);
               return;
@@ -232,7 +240,7 @@ const AddOrUpdateScreen = () => {
             disabled={isLoading}
             onClick={async () => {
               setIsLoading(true);
-              await deleteExpenseApi(item.id);
+              await deleteExpenseApi(item.id, token ?? "");
               setIsLoading(false);
               dispatch(removeExpense(item.id));
               navigation.goBack();

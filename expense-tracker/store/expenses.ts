@@ -15,8 +15,8 @@ const initialState: ExpensesState = {
 // Async thunk to fetch expenses from an API
 export const fetchExpenses = createAsyncThunk(
   "expenses/fetchExpenses",
-  async () => {
-    const data = await getExpensesApi();
+  async (token: string) => {
+    const data = await getExpensesApi(token);
     return data;
   }
 );

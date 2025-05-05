@@ -12,12 +12,13 @@ import { RootState } from "../store/store";
 const RecentExpensesScreen = () => {
   const expenses = useSelector((state: RootState) => state.expenses.expenses);
   const isLoading = useSelector((state: RootState) => state.expenses.isLoading);
+  const token = useSelector((state: RootState) => state.auth.authState?.token);
   const recent = getRecentExpenses(expenses);
   const total = recent.reduce((acc, cur) => acc + cur.amount, 0);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(fetchExpenses());
+    dispatch(fetchExpenses(token ?? ""));
   }, [dispatch]);
   if (isLoading) {
     return <Loading />;
