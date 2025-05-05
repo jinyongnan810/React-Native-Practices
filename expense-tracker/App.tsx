@@ -6,7 +6,7 @@ import {
   NativeStackNavigationProp,
 } from "@react-navigation/native-stack";
 import { StatusBar } from "expo-status-bar";
-import React from "react";
+import React, { useEffect } from "react";
 import { StyleSheet } from "react-native";
 import { Provider, useSelector } from "react-redux";
 import AddButton from "./components/AddButton";
@@ -17,6 +17,8 @@ import OtherScreen from "./screens/AllExpensesScreen";
 import LoginScreen from "./screens/LoginScreen";
 import RecentExpensesScreen from "./screens/RecentExpensesScreen";
 import SignupScreen from "./screens/SignupScreen";
+import { restoreAuth } from "./store/auth";
+import { useAppDispatch } from "./store/hooks";
 import { RootState, store } from "./store/store";
 export type RootStackParamList = {
   Home: undefined;
@@ -131,6 +133,11 @@ function AuthenticatedStack() {
 }
 
 function AppStack() {
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(restoreAuth());
+  }, [dispatch]);
   const isAuthenticated = useSelector(
     (state: RootState) => state.auth.authState !== undefined
   );
