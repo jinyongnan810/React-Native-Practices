@@ -10,6 +10,7 @@ import React from "react";
 import { StyleSheet } from "react-native";
 import { Provider, useSelector } from "react-redux";
 import AddButton from "./components/AddButton";
+import LogoutButton from "./components/LogoutButton";
 import Colors from "./constants";
 import AddOrUpdateScreen from "./screens/AddOrUpdateScreen";
 import OtherScreen from "./screens/AllExpensesScreen";
@@ -64,6 +65,7 @@ function HomeTabNavigator() {
         },
         headerTintColor: "#fff",
         headerRight: () => <AddButton />,
+        headerLeft: () => <LogoutButton />,
         sceneStyle: {
           backgroundColor: Colors.secondary,
         },
