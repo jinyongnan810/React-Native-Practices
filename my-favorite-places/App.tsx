@@ -18,6 +18,7 @@ export type RootStackParamList = {
       lng: number;
     };
     onLocationSelected?: (location: { lat: number; lng: number }) => void;
+    isFromNewPlace?: boolean;
   };
 };
 const Stack = createNativeStackNavigator<RootStackParamList>();

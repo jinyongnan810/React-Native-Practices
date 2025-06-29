@@ -4,25 +4,45 @@ import { Image, StyleSheet, Text, View } from "react-native";
 import { PlaceScreenNavigationProps, RootStackParamList } from "../App";
 import ViewOnMapButton from "../components/view-on-map-button";
 import Colors from "../constants";
+import { fetchPlaceByIdFromDatabase } from "../helpers/sqlite-helper";
+import { Place } from "../models/place";
 type PlaceScreenRouteProp = RouteProp<RootStackParamList, "Place">;
 const PlaceScreen = () => {
   const { id } = useRoute<PlaceScreenRouteProp>().params;
   const navigation = useNavigation<PlaceScreenNavigationProps>();
+  const [place, setPlace] = React.useState<Place | null>(null);
   useEffect(() => {
-    navigation.setOptions({
-      title: `Place ${id}`,
+    // Fetch place details from the database
+    fetchPlaceByIdFromDatabase(id).then((fetchedPlace) => {
+      if (fetchedPlace) {
+        setPlace(fetchedPlace);
+      } else {
+        console.error("Place not found in database");
+        alert("Place not found. Please try again.");
+      }
     });
-  }, [navigation, id]);
+    navigation.setOptions({
+      title: place ? place.title : "Place Details",
+    });
+  }, [id]);
+
   return (
     <View style={styles.container}>
-      <Image
-        style={styles.image}
-        source={{
-          uri: "https://images.pexels.com/photos/1459495/pexels-photo-1459495.jpeg",
-        }}
+      {place && (
+        <Image
+          style={styles.image}
+          source={{
+            uri: place.imageUri,
+          }}
+        />
+      )}
+      {place && <Text style={styles.address}>{place.address}</Text>}
+
+      <ViewOnMapButton
+        onPress={() =>
+          navigation.navigate("Map", { initialLocation: place?.coordinates })
+        }
       />
-      <Text style={styles.address}>Place Screen for {id}</Text>
-      <ViewOnMapButton onPress={() => navigation.navigate("Map")} />
     </View>
   );
 };

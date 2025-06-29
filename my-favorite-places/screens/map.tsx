@@ -5,28 +5,29 @@ import MapView, { Marker } from "react-native-maps";
 import { MapScreenNavigationProps, RootStackParamList } from "../App";
 type MapScreenRouteProp = RouteProp<RootStackParamList, "Map">;
 const MapScreen = () => {
-  const { initialLocation, onLocationSelected } =
+  const { initialLocation, onLocationSelected, isFromNewPlace } =
     useRoute<MapScreenRouteProp>().params;
   const [selectedLocation, setSelectedLocation] = React.useState<{
     lat: number;
     lng: number;
-  } | null>(null);
+  } | null>(!isFromNewPlace && initialLocation ? initialLocation : null);
   const navigation = useNavigation<MapScreenNavigationProps>();
   React.useEffect(() => {
     navigation.setOptions({
-      headerRight: () => (
-        <Button
-          title="Select"
-          disabled={!selectedLocation}
-          onPress={() => {
-            if (selectedLocation) {
-              onLocationSelected?.(selectedLocation);
-              navigation.goBack();
-            }
-          }}
-          color="#fff"
-        />
-      ),
+      headerRight: () =>
+        isFromNewPlace ? (
+          <Button
+            title="Select"
+            disabled={!selectedLocation}
+            onPress={() => {
+              if (selectedLocation) {
+                onLocationSelected?.(selectedLocation);
+                navigation.goBack();
+              }
+            }}
+            color="#fff"
+          />
+        ) : null,
     });
   }, [selectedLocation, navigation]);
   return (

@@ -37,7 +37,8 @@
         {
           "locationAlwaysAndWhenInUsePermission": "Allow app to use your location."
         }
-      ]
+      ],
+      "expo-sqlite"
     ]
   }
 }

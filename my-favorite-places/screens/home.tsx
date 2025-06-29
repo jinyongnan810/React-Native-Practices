@@ -1,30 +1,13 @@
 import { Ionicons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 import React, { useEffect } from "react";
-import { FlatList, StyleSheet, View } from "react-native";
+import { FlatList, StyleSheet, Text, View } from "react-native";
 import { HomeScreenNavigationProps } from "../App";
 import CustomButton from "../components/custom-button";
 import PlaceCard from "../components/place-card";
 import Colors from "../constants";
+import { fetchPlacesFromDatabase } from "../helpers/sqlite-helper";
 import { Place } from "../models/place";
-const dummyPlaces: Place[] = [
-  {
-    id: "1",
-    title: "Place 1",
-    imageUri:
-      "https://images.pexels.com/photos/1459495/pexels-photo-1459495.jpeg",
-    address: "Address 1",
-    coordinates: { lat: 37.78825, lng: -122.4324 },
-  },
-  {
-    id: "2",
-    title: "Place 2",
-    imageUri:
-      "https://images.pexels.com/photos/1459495/pexels-photo-1459495.jpeg",
-    address: "Address 2",
-    coordinates: { lat: 37.78825, lng: -122.4324 },
-  },
-];
 const HomeScreen = () => {
   const navigation = useNavigation<HomeScreenNavigationProps>();
   useEffect(() => {
@@ -37,11 +20,26 @@ const HomeScreen = () => {
       ),
     });
   }, [navigation]);
+  const [places, setPlaces] = React.useState<Place[]>([]);
+  const isFocused = useIsFocused();
+  useEffect(() => {
+    if (isFocused) {
+      fetchPlacesFromDatabase()
+        .then((places) => {
+          console.log("Fetched places from database:", places);
+          setPlaces(places);
+        })
+        .catch((error) => {
+          console.error("Error fetching places from database:", error);
+          alert("Failed to fetch places. Please try again.");
+        });
+    }
+  }, [isFocused]);
   return (
     <View style={styles.container}>
       <FlatList
         contentContainerStyle={{ width: "100%" }}
-        data={dummyPlaces}
+        data={places}
         keyExtractor={(item) => item.id}
         renderItem={(item) => (
           <PlaceCard
@@ -51,7 +49,15 @@ const HomeScreen = () => {
         )}
         ListEmptyComponent={() => (
           <View>
-            <Ionicons name="location-outline" size={24} color="black" />
+            <Text
+              style={{
+                textAlign: "center",
+                marginTop: 20,
+                color: Colors.primary500,
+              }}
+            >
+              No places found. Add a new place!
+            </Text>
           </View>
         )}
       />
