@@ -1,8 +1,10 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import React, { useEffect } from "react";
+import * as ImagePicker from "expo-image-picker";
+import React, { useEffect, useState } from "react";
 import {
   Button,
+  Image,
   ScrollView,
   StyleSheet,
   Text,
@@ -14,6 +16,8 @@ import CustomButton from "../components/custom-button";
 import Colors from "../constants";
 const NewPlaceScreen = () => {
   const navigation = useNavigation<NewPlaceScreenNavigationProps>();
+  const [title, setTitle] = useState("");
+  const [image, setImage] = useState<string | null>(null);
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => (
@@ -27,23 +31,55 @@ const NewPlaceScreen = () => {
       ),
     });
   }, [navigation]);
+  const pickImage = async () => {
+    console.log("pickImage called");
+    let permissionResult = await ImagePicker.requestCameraPermissionsAsync();
+    if (permissionResult.granted === false) {
+      alert("Permission to access camera is required!");
+      return;
+    }
+    let result = await ImagePicker.launchCameraAsync({
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+    }
+  };
   return (
     <ScrollView>
       <View style={styles.container}>
         <Text style={{ fontSize: 16, color: Colors.primary500 }}>Title</Text>
-        <TextInput placeholder="Enter place title" style={styles.input} />
-        <View style={styles.placeholder}>
-          <Text style={styles.placeholderText}>No image taken yet.</Text>
+        <TextInput
+          placeholder="Enter place title"
+          style={styles.input}
+          value={title}
+          onChangeText={setTitle}
+        />
+        <View style={styles.image}>
+          {image && (
+            <Image
+              source={{ uri: image }}
+              style={{ width: "100%", height: "100%", borderRadius: 8 }}
+            />
+          )}
+          {!image && (
+            <Text style={styles.placeholderText}>No image taken yet.</Text>
+          )}
         </View>
         <CustomButton
           text="Take Image"
           border={true}
           icon={<Ionicons name="camera" size={24} color={Colors.primary500} />}
-          onPress={() => console.log("Add Place Pressed")}
+          onPress={pickImage}
           style={{ marginTop: 16, marginBottom: 16 }}
         />
-        <View style={styles.placeholder}>
-          <Text style={styles.placeholderText}>No place selected yet.</Text>
+        <View style={styles.image}>
+          <Text style={styles.placeholderText}>No place selected.</Text>
         </View>
         <View style={styles.locationButtons}>
           <CustomButton
@@ -93,13 +129,14 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     marginTop: 16,
   },
-  placeholder: {
+  image: {
     width: "100%",
     height: 200,
     backgroundColor: Colors.primary50,
     borderRadius: 8,
     justifyContent: "center",
     alignItems: "center",
+    objectFit: "cover",
   },
   placeholderText: {
     color: Colors.gray700,

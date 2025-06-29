@@ -39,7 +39,11 @@ const CustomButton = ({ text, icon, border, onPress, style }: Props) => {
         }}
       >
         {icon}
-        {text && <Text style={{ color: Colors.primary200 }}>{text}</Text>}
+        {text && (
+          <Text style={{ color: Colors.primary200, marginLeft: 4 }}>
+            {text}
+          </Text>
+        )}
       </View>
     </Pressable>
   );
