@@ -87,3 +87,19 @@ export const fetchPlaceByIdFromDatabase = async (
   };
   return place;
 };
+
+export const deletePlaceFromDatabase = async (id: string): Promise<void> => {
+  const db = await SQLite.openDatabaseAsync("my_favorite_places.db");
+  await db.runAsync(
+    `CREATE TABLE IF NOT EXISTS places (
+                id TEXT PRIMARY KEY,
+                title TEXT NOT NULL,
+                imageUri TEXT NOT NULL,
+                address TEXT NOT NULL,
+                lat REAL NOT NULL,
+                lng REAL NOT NULL
+            );`
+  );
+  await db.runAsync(`DELETE FROM places WHERE id = ?;`, [id]);
+  console.log(`Place with id ${id} deleted from database.`);
+};
