@@ -50,7 +50,13 @@ export default function App() {
           }}
         />
         <Stack.Screen name="Place" component={PlaceScreen} />
-        <Stack.Screen name="NewPlace" component={NewPlaceScreen} />
+        <Stack.Screen
+          name="NewPlace"
+          component={NewPlaceScreen}
+          options={{
+            title: "Add a New Place",
+          }}
+        />
         <Stack.Screen name="Map" component={MapScreen} />
       </Stack.Navigator>
     </NavigationContainer>
