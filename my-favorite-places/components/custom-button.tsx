@@ -36,6 +36,8 @@ const CustomButton = ({ text, icon, border, onPress, style }: Props) => {
           paddingVertical: 4,
           borderColor: Colors.primary200,
           borderWidth: border ? 2 : 0,
+          minWidth: 60,
+          minHeight: 40,
         }}
       >
         {icon}

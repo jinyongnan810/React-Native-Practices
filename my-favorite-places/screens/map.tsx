@@ -1,7 +1,62 @@
+import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import React from "react";
-import { Text } from "react-native";
+import { Button } from "react-native";
+import MapView, { Marker } from "react-native-maps";
+import { MapScreenNavigationProps, RootStackParamList } from "../App";
+type MapScreenRouteProp = RouteProp<RootStackParamList, "Map">;
 const MapScreen = () => {
-  return <Text>MapScreen</Text>;
+  const { initialLocation, onLocationSelected } =
+    useRoute<MapScreenRouteProp>().params;
+  const [selectedLocation, setSelectedLocation] = React.useState<{
+    lat: number;
+    lng: number;
+  } | null>(null);
+  const navigation = useNavigation<MapScreenNavigationProps>();
+  React.useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <Button
+          title="Select"
+          disabled={!selectedLocation}
+          onPress={() => {
+            if (selectedLocation) {
+              onLocationSelected?.(selectedLocation);
+              navigation.goBack();
+            }
+          }}
+          color="#fff"
+        />
+      ),
+    });
+  }, [selectedLocation, navigation]);
+  return (
+    <MapView
+      style={{ flex: 1 }}
+      initialRegion={{
+        latitude: initialLocation?.lat ?? 37.78825,
+        longitude: initialLocation?.lng ?? -122.4324,
+        latitudeDelta: 0.0922,
+        longitudeDelta: 0.0421,
+      }}
+      onPress={(event) => {
+        console.log("Map pressed at:", event.nativeEvent.coordinate);
+        setSelectedLocation({
+          lat: event.nativeEvent.coordinate.latitude,
+          lng: event.nativeEvent.coordinate.longitude,
+        });
+      }}
+    >
+      {selectedLocation && (
+        <Marker
+          coordinate={{
+            latitude: selectedLocation.lat,
+            longitude: selectedLocation.lng,
+          }}
+          title="Selected Location"
+        />
+      )}
+    </MapView>
+  );
 };
 
 export default MapScreen;

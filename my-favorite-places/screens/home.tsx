@@ -33,7 +33,6 @@ const HomeScreen = () => {
         <CustomButton
           icon={<Ionicons name="add" size={24} color={Colors.gray700} />}
           onPress={() => navigation.navigate("NewPlace")}
-          style={{ marginRight: 4 }}
         />
       ),
     });

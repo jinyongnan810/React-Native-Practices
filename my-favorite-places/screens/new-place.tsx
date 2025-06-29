@@ -1,6 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
+import * as Location from "expo-location";
 import React, { useEffect, useState } from "react";
 import {
   Button,
@@ -11,6 +12,7 @@ import {
   TextInput,
   View,
 } from "react-native";
+import MapView, { Marker } from "react-native-maps";
 import { NewPlaceScreenNavigationProps } from "../App";
 import CustomButton from "../components/custom-button";
 import Colors from "../constants";
@@ -18,6 +20,10 @@ const NewPlaceScreen = () => {
   const navigation = useNavigation<NewPlaceScreenNavigationProps>();
   const [title, setTitle] = useState("");
   const [image, setImage] = useState<string | null>(null);
+  const [location, setLocation] = useState<{
+    lat: number;
+    lng: number;
+  } | null>(null);
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => (
@@ -50,6 +56,25 @@ const NewPlaceScreen = () => {
       setImage(result.assets[0].uri);
     }
   };
+  const getMyLocation = async () => {
+    let permissionResult = await Location.requestForegroundPermissionsAsync();
+    if (permissionResult.granted === false) {
+      alert("Permission to access location is required!");
+      return;
+    }
+    const location = await Location.getCurrentPositionAsync({});
+    console.log(location);
+    return { lat: location.coords.latitude, lng: location.coords.longitude };
+  };
+
+  const setToMyLocation = async () => {
+    const myLocation = await getMyLocation();
+    if (!myLocation) {
+      return;
+    }
+    const { lat, lng } = myLocation;
+    setLocation({ lat, lng });
+  };
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -79,7 +104,28 @@ const NewPlaceScreen = () => {
           style={{ marginTop: 16, marginBottom: 16 }}
         />
         <View style={styles.image}>
-          <Text style={styles.placeholderText}>No place selected.</Text>
+          {location && (
+            <MapView
+              style={{ width: "100%", height: "100%", borderRadius: 8 }}
+              region={{
+                latitude: location.lat,
+                longitude: location.lng,
+                latitudeDelta: 0.0922,
+                longitudeDelta: 0.0421,
+              }}
+            >
+              <Marker
+                coordinate={{
+                  latitude: location.lat,
+                  longitude: location.lng,
+                }}
+                title={title}
+              />
+            </MapView>
+          )}
+          {!location && (
+            <Text style={styles.placeholderText}>No place selected.</Text>
+          )}
         </View>
         <View style={styles.locationButtons}>
           <CustomButton
@@ -88,13 +134,23 @@ const NewPlaceScreen = () => {
             icon={
               <Ionicons name="location" size={24} color={Colors.primary500} />
             }
-            onPress={() => console.log("Locate Pressed")}
+            onPress={setToMyLocation}
           />
           <CustomButton
             border={true}
             text="Pick on Map"
             icon={<Ionicons name="map" size={24} color={Colors.primary500} />}
-            onPress={() => console.log("Pick on map Pressed")}
+            onPress={async () => {
+              const initialLocation = await getMyLocation();
+
+              navigation.navigate("Map", {
+                initialLocation: initialLocation,
+                onLocationSelected: (location) => {
+                  setLocation(location);
+                  console.log("Selected location:", location);
+                },
+              });
+            }}
           />
         </View>
       </View>
@@ -117,7 +173,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 8,
     padding: 8,
-    backgroundColor: Colors.primary50,
+    backgroundColor: Colors.primary100,
     color: Colors.gray700,
     marginBottom: 16,
     height: 40,
@@ -132,7 +188,7 @@ const styles = StyleSheet.create({
   image: {
     width: "100%",
     height: 200,
-    backgroundColor: Colors.primary50,
+    backgroundColor: Colors.primary100,
     borderRadius: 8,
     justifyContent: "center",
     alignItems: "center",

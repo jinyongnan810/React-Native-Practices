@@ -12,7 +12,13 @@ export type RootStackParamList = {
   Home: undefined;
   Place: { id: string };
   NewPlace: undefined;
-  Map: undefined;
+  Map: {
+    initialLocation?: {
+      lat: number;
+      lng: number;
+    };
+    onLocationSelected?: (location: { lat: number; lng: number }) => void;
+  };
 };
 const Stack = createNativeStackNavigator<RootStackParamList>();
 export type HomeScreenNavigationProps = NativeStackNavigationProp<
@@ -26,6 +32,10 @@ export type PlaceScreenNavigationProps = NativeStackNavigationProp<
 export type NewPlaceScreenNavigationProps = NativeStackNavigationProp<
   RootStackParamList,
   "NewPlace"
+>;
+export type MapScreenNavigationProps = NativeStackNavigationProp<
+  RootStackParamList,
+  "Map"
 >;
 export default function App() {
   return (
