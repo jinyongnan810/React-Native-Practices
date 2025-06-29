@@ -3,7 +3,9 @@ import { useNavigation } from "@react-navigation/native";
 import React, { useEffect } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 import { HomeScreenNavigationProps } from "../App";
+import CustomButton from "../components/custom-button";
 import PlaceCard from "../components/place-card";
+import Colors from "../constants";
 import { Place } from "../models/place";
 const dummyPlaces: Place[] = [
   {
@@ -28,11 +30,10 @@ const HomeScreen = () => {
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <Ionicons
-          name="add"
-          size={24}
-          color="white"
+        <CustomButton
+          icon={<Ionicons name="add" size={24} color={Colors.gray700} />}
           onPress={() => navigation.navigate("NewPlace")}
+          style={{ marginRight: 4 }}
         />
       ),
     });

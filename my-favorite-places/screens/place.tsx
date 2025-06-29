@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import { PlaceScreenNavigationProps, RootStackParamList } from "../App";
 import ViewOnMapButton from "../components/view-on-map-button";
+import Colors from "../constants";
 type PlaceScreenRouteProp = RouteProp<RootStackParamList, "Place">;
 const PlaceScreen = () => {
   const { id } = useRoute<PlaceScreenRouteProp>().params;
@@ -39,7 +40,7 @@ const styles = StyleSheet.create({
   address: {
     marginTop: 16,
     fontSize: 24,
-    color: "#fff",
+    color: Colors.primary200,
     marginBottom: 16,
   },
 });

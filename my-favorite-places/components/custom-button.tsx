@@ -7,13 +7,15 @@ import {
   View,
   ViewStyle,
 } from "react-native";
+import Colors from "../constants";
 type Props = {
-  text: string;
+  text?: string;
   icon: ReactNode;
+  border?: boolean;
   onPress?: () => void;
   style?: StyleProp<ViewStyle>;
 };
-const CustomButton = ({ text, icon, onPress, style }: Props) => {
+const CustomButton = ({ text, icon, border, onPress, style }: Props) => {
   return (
     <Pressable
       onPress={onPress}
@@ -32,12 +34,12 @@ const CustomButton = ({ text, icon, onPress, style }: Props) => {
           alignItems: "center",
           paddingHorizontal: 12,
           paddingVertical: 4,
-          borderColor: "#fff",
-          borderWidth: 2,
+          borderColor: Colors.primary200,
+          borderWidth: border ? 2 : 0,
         }}
       >
         {icon}
-        <Text style={{ color: "#fff" }}>{text}</Text>
+        {text && <Text style={{ color: Colors.primary200 }}>{text}</Text>}
       </View>
     </Pressable>
   );

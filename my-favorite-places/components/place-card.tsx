@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     overflow: "hidden",
     width: "100%",
-    backgroundColor: Colors.primary,
+    backgroundColor: Colors.primary500,
     marginBottom: 8,
   },
   image: {
@@ -63,11 +63,11 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     fontWeight: "bold",
-    color: "#fff",
+    color: Colors.gray700,
   },
   address: {
     fontSize: 12,
-    color: "#fff",
+    color: Colors.gray700,
     fontWeight: "300",
   },
 });

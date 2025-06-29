@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import { NewPlaceScreenNavigationProps } from "../App";
 import CustomButton from "../components/custom-button";
+import Colors from "../constants";
 const NewPlaceScreen = () => {
   const navigation = useNavigation<NewPlaceScreenNavigationProps>();
   useEffect(() => {
@@ -21,7 +22,7 @@ const NewPlaceScreen = () => {
           onPress={() => {
             navigation.goBack();
           }}
-          color={"#fff"}
+          color={Colors.gray700}
         />
       ),
     });
@@ -29,14 +30,15 @@ const NewPlaceScreen = () => {
   return (
     <ScrollView>
       <View style={styles.container}>
-        <Text style={{ fontSize: 16, color: "#fff" }}>Title</Text>
+        <Text style={{ fontSize: 16, color: Colors.primary500 }}>Title</Text>
         <TextInput placeholder="Enter place title" style={styles.input} />
         <View style={styles.placeholder}>
           <Text style={styles.placeholderText}>No image taken yet.</Text>
         </View>
         <CustomButton
           text="Take Image"
-          icon={<Ionicons name="camera" size={24} color="#fff" />}
+          border={true}
+          icon={<Ionicons name="camera" size={24} color={Colors.primary500} />}
           onPress={() => console.log("Add Place Pressed")}
           style={{ marginTop: 16, marginBottom: 16 }}
         />
@@ -45,13 +47,17 @@ const NewPlaceScreen = () => {
         </View>
         <View style={styles.locationButtons}>
           <CustomButton
+            border={true}
             text="Locate My Place"
-            icon={<Ionicons name="location" size={24} color="#fff" />}
+            icon={
+              <Ionicons name="location" size={24} color={Colors.primary500} />
+            }
             onPress={() => console.log("Locate Pressed")}
           />
           <CustomButton
+            border={true}
             text="Pick on Map"
-            icon={<Ionicons name="map" size={24} color="#fff" />}
+            icon={<Ionicons name="map" size={24} color={Colors.primary500} />}
             onPress={() => console.log("Pick on map Pressed")}
           />
         </View>
@@ -71,12 +77,12 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   input: {
-    borderColor: "#ccc",
+    borderColor: Colors.primary200,
     borderWidth: 1,
     borderRadius: 8,
     padding: 8,
-    backgroundColor: "#fff",
-    color: "#000",
+    backgroundColor: Colors.primary50,
+    color: Colors.gray700,
     marginBottom: 16,
     height: 40,
     fontSize: 24,
@@ -90,13 +96,13 @@ const styles = StyleSheet.create({
   placeholder: {
     width: "100%",
     height: 200,
-    backgroundColor: "#ccc",
+    backgroundColor: Colors.primary50,
     borderRadius: 8,
     justifyContent: "center",
     alignItems: "center",
   },
   placeholderText: {
-    color: "#888",
+    color: Colors.gray700,
     fontSize: 16,
   },
 });

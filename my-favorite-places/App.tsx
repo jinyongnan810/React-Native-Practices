@@ -34,11 +34,11 @@ export default function App() {
         initialRouteName="Home"
         screenOptions={{
           headerStyle: {
-            backgroundColor: Colors.primary,
+            backgroundColor: Colors.primary500,
           },
-          headerTintColor: "#fff",
+          headerTintColor: Colors.gray700,
           contentStyle: {
-            backgroundColor: Colors.secondary,
+            backgroundColor: Colors.gray700,
           },
         }}
       >
