@@ -4,8 +4,8 @@ import {
   NativeBottomTabNavigationOptions,
 } from "@bottom-tabs/react-navigation";
 import { ParamListBase, TabNavigationState } from "@react-navigation/native";
-import { withLayoutContext } from "expo-router";
-import React from "react";
+import { useSegments, withLayoutContext } from "expo-router";
+import React, { useEffect, useMemo } from "react";
 
 const BottomTabNavigator = createNativeBottomTabNavigator().Navigator;
 
@@ -16,6 +16,20 @@ const Tabs = withLayoutContext<
   NativeBottomTabNavigationEventMap
 >(BottomTabNavigator);
 const TabLayout = () => {
+  const segments = useSegments();
+
+  const selectedTab = useMemo(() => {
+    // console.log("Segments:", segments);
+    if (segments.length < 3) {
+      return "";
+    }
+    return segments[2];
+  }, [segments]);
+
+  useEffect(() => {
+    // This effect can be used to perform actions when the selected tab changes
+    console.log(`Selected tab: ${selectedTab}`);
+  }, [selectedTab]);
   return (
     <Tabs>
       <Tabs.Screen
