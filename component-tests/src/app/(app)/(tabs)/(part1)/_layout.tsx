@@ -3,7 +3,9 @@ import React from "react";
 
 const Part1Layout = () => {
   return (
-    <Stack>
+    <Stack
+      screenOptions={{ headerShown: false, animation: "fade_from_bottom" }}
+    >
       <Stack.Screen name="index" options={{ title: "Part1" }} />
     </Stack>
   );
