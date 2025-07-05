@@ -7,11 +7,21 @@ const RootLayout = () => {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <Stack
-        screenOptions={{ headerShown: false, animation: "fade_from_bottom" }}
+        screenOptions={{
+          headerShown: false,
+          animation: "fade_from_bottom",
+        }}
       >
         <Stack.Screen name="login" />
         <Stack.Screen name="(app)" />
-        <Stack.Screen name="about" />
+        <Stack.Screen
+          name="about"
+          options={{
+            headerShown: true,
+            headerBackTitle: "Back",
+            headerTitle: "About",
+          }}
+        />
       </Stack>
     </GestureHandlerRootView>
   );

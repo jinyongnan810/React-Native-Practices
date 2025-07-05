@@ -1500,6 +1500,55 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
+  - react-native-slider (4.5.7):
+    - DoubleConversion
+    - glog
+    - hermes-engine
+    - RCT-Folly (= 2024.11.18.00)
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-hermes
+    - React-ImageManager
+    - React-jsi
+    - react-native-slider/common (= 4.5.7)
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-renderercss
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - Yoga
+  - react-native-slider/common (4.5.7):
+    - DoubleConversion
+    - glog
+    - hermes-engine
+    - RCT-Folly (= 2024.11.18.00)
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-hermes
+    - React-ImageManager
+    - React-jsi
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-renderercss
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - Yoga
   - React-NativeModulesApple (0.79.5):
     - glog
     - hermes-engine
@@ -1959,6 +2008,7 @@ DEPENDENCIES:
   - React-microtasksnativemodule (from `../node_modules/react-native/ReactCommon/react/nativemodule/microtasks`)
   - react-native-bottom-tabs (from `../node_modules/react-native-bottom-tabs`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
+  - "react-native-slider (from `../node_modules/@react-native-community/slider`)"
   - React-NativeModulesApple (from `../node_modules/react-native/ReactCommon/react/nativemodule/core/platform/ios`)
   - React-oscompat (from `../node_modules/react-native/ReactCommon/oscompat`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
@@ -2101,6 +2151,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-bottom-tabs"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
+  react-native-slider:
+    :path: "../node_modules/@react-native-community/slider"
   React-NativeModulesApple:
     :path: "../node_modules/react-native/ReactCommon/react/nativemodule/core/platform/ios"
   React-oscompat:
@@ -2220,6 +2272,7 @@ SPEC CHECKSUMS:
   React-microtasksnativemodule: 964a2c1213bb39fa5cc8d5ee4f55846d67747f32
   react-native-bottom-tabs: c7dde6a6025c37c0e8f494c7dbd4d33453af8902
   react-native-safe-area-context: 6cec90ce53951d3b52dc73e873323a4a7662fc0c
+  react-native-slider: 89552e4381bc34e492a7b53be7ec78221bbc9896
   React-NativeModulesApple: d2b9bd7d55dfd864e56c76592777ad32e8ab1f3d
   React-oscompat: 0592889a9fcf0eacb205532028e4a364e22907dd
   React-perflogger: 634408a9a0f5753faa577dfa81bc009edca01062
